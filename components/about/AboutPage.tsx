@@ -290,12 +290,6 @@ function ImageCircle() {
         sizes="(max-width: 480px) 90vw, (max-width: 768px) 70vw, 400px"
         priority
       />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 to-transparent px-4 py-6 text-center">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Founder photo</p>
-        <p className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-foreground">
-          {siteMeta.founder}
-        </p>
-      </div>
     </div>
   );
 }

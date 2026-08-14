@@ -88,8 +88,8 @@ export function ReadingRoomSection() {
             </CardContent>
           </Card>
 
-          {/* Featured Summary Callout */}
-          <div className="flex flex-col justify-between gap-6 lg:col-span-5">
+          {/* Featured Summary Callout & Media */}
+          <div className="flex flex-col gap-6 lg:col-span-5">
             <div className="rounded-2xl border border-[var(--color-gold)]/30 bg-[var(--color-cream)]/50 p-6 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--color-burgundy)] text-white shadow-xs">
@@ -124,19 +124,35 @@ export function ReadingRoomSection() {
               </ul>
             </div>
 
+            {/* Featured Image Spotlight */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
+              <Image
+                src="/books/Reading room 1.jpeg"
+                alt="Children reading in Shakurpur Reading Room"
+                fill
+                sizes="(max-width: 1024px) 100vw, 420px"
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 text-white">
+                <p className="text-xs font-semibold drop-shadow">Community Reading Space</p>
+                <p className="text-[11px] text-white/85 drop-shadow">Regular reading circles and literacy sessions for children</p>
+              </div>
+            </div>
+
             {/* Quick Stats banner */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl border border-border bg-card p-4 text-center shadow-2xs">
-                <div className="text-2xl font-bold text-[var(--color-burgundy)] font-[family-name:var(--font-playfair)]">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="rounded-xl border border-border bg-card p-3.5 text-center shadow-2xs">
+                <div className="text-xl sm:text-2xl font-bold text-[var(--color-burgundy)] font-[family-name:var(--font-playfair)]">
                   100+
                 </div>
-                <div className="text-xs text-muted-foreground">Books Collected &amp; Shelved</div>
+                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Books Collected &amp; Shelved</div>
               </div>
-              <div className="rounded-xl border border-border bg-card p-4 text-center shadow-2xs">
-                <div className="text-2xl font-bold text-[var(--color-gold)] font-[family-name:var(--font-playfair)]">
+              <div className="rounded-xl border border-border bg-card p-3.5 text-center shadow-2xs">
+                <div className="text-xl sm:text-2xl font-bold text-[var(--color-gold)] font-[family-name:var(--font-playfair)]">
                   Shakurpur
                 </div>
-                <div className="text-xs text-muted-foreground">Community Focus Area</div>
+                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Community Focus Area</div>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, BookOpen, Heart, Mic2, Award, ExternalLink } from "lucide-react";
+import { ArrowRight, BookOpen, Building2, ExternalLink, GraduationCap, Heart, Mic2, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -143,45 +143,77 @@ export function HomePage({ heroImage }: HomePageProps) {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="space-y-6 lg:col-span-6"
           >
-            <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)] md:text-4xl">
-              What is Voices Unheard?
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/70 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-burgundy)]">
+              <Building2 className="size-3.5" />
+              <span>{home.rightsToReality.eyebrow}</span>
+            </div>
+            <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold tracking-tight text-[var(--color-burgundy)] sm:text-4xl lg:text-5xl lg:leading-[1.12]">
+              {home.rightsToReality.title}
             </h2>
-            <TracingBeam className="mt-6">
-              <p className="text-lg leading-relaxed text-muted-foreground">{home.whatIs.body}</p>
-            </TracingBeam>
+            <p className="text-lg font-medium leading-relaxed text-foreground">
+              {home.rightsToReality.lead}
+            </p>
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+              {home.rightsToReality.body.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2 pt-2">
+              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                Noida Sector 8
+              </span>
+              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                Vasant Kunj
+              </span>
+              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                Mahipalpur Camps
+              </span>
+              <span className="rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-foreground">
+                Partner: Hamari Pehchaan NGO
+              </span>
+            </div>
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="space-y-4 lg:col-span-6"
           >
-            {home.whatIs.steps.map((step, i) => (
-              <div
-                key={step.title}
-                className="relative flex gap-4 border-l-2 border-dotted border-[var(--color-gold)] pl-6"
-              >
-                <div className="absolute -left-[11px] top-0 flex size-5 items-center justify-center rounded-full bg-[var(--color-burgundy)] text-[10px] font-bold text-white">
-                  {i + 1}
-                </div>
-                <div>
-                  <p className="flex items-center gap-2 font-semibold text-foreground">
-                    {i === 0 ? <Heart className="size-4 text-[var(--color-burgundy)]" /> : null}
-                    {i === 1 ? <BookOpen className="size-4 text-[var(--color-burgundy)]" /> : null}
-                    {i === 2 ? <Mic2 className="size-4 text-[var(--color-burgundy)]" /> : null}
-                    {step.title}
+            {home.rightsToReality.pillars.map((pillar, i) => {
+              const icons = [Building2, ShieldCheck, GraduationCap, Mic2];
+              const Icon = icons[i] ?? Building2;
+              return (
+                <div
+                  key={pillar.title}
+                  className="rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-[var(--color-gold)]/40 hover:shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)]">
+                        <Icon className="size-5" />
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {pillar.title}
+                      </h3>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/50 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--color-burgundy)]">
+                      {pillar.badge}
+                    </span>
+                  </div>
+                  <p className="mt-2.5 pl-12 text-sm leading-relaxed text-muted-foreground">
+                    {pillar.desc}
                   </p>
-                  <p className="mt-1 text-sm text-muted-foreground">{step.desc}</p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       </section>
@@ -191,18 +223,18 @@ export function HomePage({ heroImage }: HomePageProps) {
           <h2 className="text-center font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)]">
             The Gap We Bridge
           </h2>
-          <div className="relative mx-auto mt-10 max-w-3xl rounded-3xl border border-[var(--color-gold)]/20 bg-[var(--color-cream)]/45 px-2 py-8 shadow-sm sm:px-4 sm:py-10">
-            <div className="relative mx-auto flex h-[min(320px,78vw)] max-w-xl items-center justify-center">
+          <div className="relative mx-auto mt-10 max-w-3xl rounded-3xl border border-[var(--color-gold)]/20 bg-[var(--color-cream)]/45 px-3 py-8 shadow-sm sm:px-6 sm:py-12">
+            <div className="relative mx-auto flex h-[min(370px,85vw)] sm:h-[400px] max-w-xl items-center justify-center">
               <svg
-                viewBox="0 0 420 300"
+                viewBox="0 0 440 370"
                 className="h-full w-full max-w-full"
                 preserveAspectRatio="xMidYMid meet"
                 aria-hidden
               >
               <motion.circle
-                cx="145"
-                cy="148"
-                r="98"
+                cx="155"
+                cy="145"
+                r="95"
                 fill="oklch(0.55 0.12 350 / 0.25)"
                 stroke="var(--color-burgundy)"
                 strokeWidth="2"
@@ -212,9 +244,9 @@ export function HomePage({ heroImage }: HomePageProps) {
                 transition={{ duration: 0.8 }}
               />
               <motion.circle
-                cx="275"
-                cy="148"
-                r="98"
+                cx="285"
+                cy="145"
+                r="95"
                 fill="oklch(0.75 0.12 75 / 0.2)"
                 stroke="var(--color-gold)"
                 strokeWidth="2"
@@ -224,9 +256,9 @@ export function HomePage({ heroImage }: HomePageProps) {
                 transition={{ duration: 0.8, delay: 0.1 }}
               />
               <motion.circle
-                cx="210"
-                cy="205"
-                r="98"
+                cx="220"
+                cy="225"
+                r="95"
                 fill="oklch(0.45 0.08 250 / 0.2)"
                 stroke="var(--color-burgundy)"
                 strokeOpacity="0.5"
@@ -237,18 +269,18 @@ export function HomePage({ heroImage }: HomePageProps) {
                 transition={{ duration: 0.8, delay: 0.2 }}
               />
               </svg>
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 text-center">
-                <p className="rounded-full border border-[var(--color-burgundy)]/20 bg-background/75 px-4 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm">
+              <div className="pointer-events-none absolute left-1/2 top-[46.5%] -translate-x-1/2 -translate-y-1/2 px-4 text-center">
+                <p className="rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-4 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm">
                   {home.venn.center}
                 </p>
               </div>
-              <span className="absolute left-[7%] top-[16%] rounded-full border border-[var(--color-burgundy)]/20 bg-background/80 px-3 py-1 text-center text-xs font-semibold text-[var(--color-burgundy)] shadow-sm backdrop-blur-sm sm:text-sm">
+              <span className="absolute left-[3%] top-[10%] rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-[var(--color-burgundy)] shadow-sm backdrop-blur-sm sm:left-[6%] sm:text-sm">
                 {home.venn.circles[0]}
               </span>
-              <span className="absolute right-[7%] top-[16%] rounded-full border border-[var(--color-gold)]/40 bg-background/80 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:text-sm">
+              <span className="absolute right-[3%] top-[10%] rounded-full border border-[var(--color-gold)]/40 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:right-[6%] sm:text-sm">
                 {home.venn.circles[1]}
               </span>
-              <span className="absolute bottom-[8%] left-1/2 -translate-x-1/2 rounded-full border border-[var(--color-burgundy)]/20 bg-background/80 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:text-sm">
+              <span className="absolute bottom-[3%] left-1/2 -translate-x-1/2 rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:bottom-[4%] sm:text-sm">
                 {home.venn.circles[2]}
               </span>
             </div>

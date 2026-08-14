@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { SparklesCore } from "@/components/aceternity/sparkles-core";
 import { PublicPhotoGallery } from "@/components/gallery/public-photo-gallery";
@@ -42,33 +42,32 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
         <h2 className="text-center font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)]">
           How Stories Become Poetry
         </h2>
-        <div className="mt-12 overflow-x-auto pb-2">
-          <div className="mx-auto flex min-w-max items-center justify-center gap-3">
-            {voicesPage.flow.map((step, i) => (
-              <Fragment key={step}>
+        <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-2 md:gap-3">
+          {voicesPage.flow.map((step, i) => (
+            <Fragment key={step}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="w-full max-w-xs flex-1 rounded-2xl border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/60 px-3 py-3.5 text-center text-xs font-semibold whitespace-nowrap text-foreground shadow-xs sm:max-w-none sm:px-3 sm:py-4 sm:text-xs md:text-sm lg:px-4 lg:text-base"
+              >
+                {step}
+              </motion.div>
+              {i < voicesPage.flow.length - 1 ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="w-[200px] shrink-0 rounded-2xl border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/60 px-5 py-5 text-center font-medium text-foreground shadow-sm"
+                  className="shrink-0 text-[var(--color-burgundy)]"
+                  aria-hidden
                 >
-                  {step}
+                  <ArrowRight className="hidden size-4 shrink-0 sm:block md:size-5" />
+                  <ArrowDown className="size-4 shrink-0 sm:hidden" />
                 </motion.div>
-                {i < voicesPage.flow.length - 1 ? (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="shrink-0 text-[var(--color-burgundy)]"
-                    aria-hidden
-                  >
-                    <ArrowRight className="size-6" />
-                  </motion.div>
-                ) : null}
-              </Fragment>
-            ))}
-          </div>
+              ) : null}
+            </Fragment>
+          ))}
         </div>
       </section>
 
@@ -78,7 +77,7 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
             Performance Gallery
           </h2>
           <div className="mt-10">
-            <PublicPhotoGallery images={galleryImages} variant="masonry" />
+            <PublicPhotoGallery images={galleryImages} variant="grid" />
           </div>
         </div>
       </section>

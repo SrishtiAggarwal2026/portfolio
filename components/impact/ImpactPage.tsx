@@ -74,25 +74,29 @@ export default function ImpactPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
             >
-              <Card className="h-full overflow-hidden border-border shadow-md">
-                <div className="flex justify-center bg-muted/50 py-8">
-                  <div className="relative size-[150px] shrink-0 overflow-hidden rounded-full bg-muted ring-2 ring-[var(--color-burgundy)]/15">
-                    <Image
-                      src={p.imageSrc}
-                      alt={p.imageAlt}
-                      fill
-                      className="object-cover"
-                      sizes="150px"
-                    />
-                  </div>
+              <Card className="h-full overflow-hidden border-border bg-card shadow-sm hover:shadow-md transition-shadow pt-0 gap-0">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                  <Image
+                    src={p.imageSrc}
+                    alt={p.imageAlt}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 380px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
                 </div>
-                <CardHeader>
-                  <CardTitle className="font-[family-name:var(--font-playfair)] text-xl">{p.title}</CardTitle>
+                <CardHeader className="pt-4 pb-2 px-5 sm:px-6">
+                  <CardTitle className="font-[family-name:var(--font-playfair)] text-xl text-foreground">
+                    {p.title}
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground marker:text-[var(--color-burgundy)]">
+                <CardContent className="pb-6 px-5 sm:px-6">
+                  <ul className="space-y-2.5 text-sm text-muted-foreground">
                     {p.bullets.map((b) => (
-                      <li key={b}>{b}</li>
+                      <li key={b} className="flex items-start gap-2">
+                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[var(--color-burgundy)]" />
+                        <span>{b}</span>
+                      </li>
                     ))}
                   </ul>
                 </CardContent>
