@@ -1,82 +1,99 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { PublicGalleryImage } from "@/lib/public-gallery-image";
-import { cn } from "@/lib/utils";
+import { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight, ZoomIn, Play, Pause } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { GalleryLightbox } from "@/components/gallery/gallery-lightbox";
-import { GalleryPagination } from "@/components/gallery/gallery-pagination";
-import { LazyGalleryTile } from "@/components/gallery/lazy-gallery-tile";
+import type { PublicGalleryImage } from "@/lib/public-gallery-image";
+import { getGalleryImageCaption } from "@/lib/utils";
 
-const MASONRY_ASPECTS = [
-  "aspect-[3/4]",
-  "aspect-[4/5]",
-  "aspect-square",
-  "aspect-[5/6]",
-  "aspect-[3/4]",
-  "aspect-[4/5]",
-] as const;
-
-/** Eager-load first N thumbnails on the *current* page only (keep low to save bandwidth). */
-const EAGER_GRID = 3;
-const EAGER_MASONRY = 4;
-
-export const DEFAULT_GALLERY_PAGE_SIZE = 9;
+function altFromFilename(filename: string): string {
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_/g, " ");
+  return `Community and advocacy — ${base}`;
+}
 
 type PublicPhotoGalleryProps = {
   images: PublicGalleryImage[];
-  variant: "grid" | "masonry";
+  variant?: "grid" | "masonry";
   className?: string;
-  /** Items per page (default {@link DEFAULT_GALLERY_PAGE_SIZE}). */
-  pageSize?: number;
 };
 
 export function PublicPhotoGallery({
   images,
-  variant,
   className,
-  pageSize = DEFAULT_GALLERY_PAGE_SIZE,
 }: PublicPhotoGalleryProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [page, setPage] = useState(1);
-  const galleryTopRef = useRef<HTMLDivElement>(null);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const count = images.length;
 
-  const totalPages = Math.max(1, Math.ceil(images.length / pageSize));
+  const goNext = useCallback(() => {
+    if (count === 0) return;
+    setCurrentIndex((prev) => (prev + 1) % count);
+  }, [count]);
 
+  const goPrev = useCallback(() => {
+    if (count === 0) return;
+    setCurrentIndex((prev) => (prev - 1 + count) % count);
+  }, [count]);
+
+  // Autoplay timer
   useEffect(() => {
-    setPage(1);
-    setLightboxIndex(null);
-  }, [images.length, pageSize]);
+    if (!isAutoPlaying || count <= 1) return;
+    const interval = setInterval(goNext, 3500);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, goNext, count]);
 
+  // Keyboard navigation
   useEffect(() => {
-    setPage((p) => Math.min(Math.max(1, p), totalPages));
-  }, [totalPages]);
+    if (lightboxIndex !== null) return; // Lightbox handles its own keys
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [goPrev, goNext, lightboxIndex]);
 
-  const handlePageChange = useCallback(
-    (next: number) => {
-      const clamped = Math.min(Math.max(1, next), totalPages);
-      setPage(clamped);
-      setLightboxIndex(null);
-      requestAnimationFrame(() => {
-        galleryTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    },
-    [totalPages]
-  );
+  // Touch swipe support for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
 
-  if (images.length === 0) {
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) goNext();
+      else goPrev();
+    }
+    touchStartX.current = null;
+  };
+
+  if (count === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        New photos from performances and clinics are added regularly — please check back soon.
-      </p>
+      <div className="rounded-2xl border border-dashed border-border/80 p-12 text-center">
+        <p className="text-sm text-muted-foreground">Photos will be added soon.</p>
+      </div>
     );
   }
 
-  const start = (page - 1) * pageSize;
-  const pageImages = images.slice(start, start + pageSize);
-  const eagerCount = variant === "masonry" ? EAGER_MASONRY : EAGER_GRID;
+  const currentImage = images[currentIndex];
+  const caption = getGalleryImageCaption(currentImage.filename, currentIndex);
+
+  // Visible thumbnail strip window (around current index)
+  const thumbCount = 7;
+  const half = Math.floor(thumbCount / 2);
+  const thumbs = Array.from({ length: Math.min(thumbCount, count) }, (_, i) => {
+    const idx = (currentIndex - half + i + count) % count;
+    return { idx, img: images[idx] };
+  });
 
   return (
-    <>
+    <div className={`w-full max-w-4xl mx-auto space-y-6 ${className || ""}`}>
+      {/* Lightbox Modal on full click */}
       <GalleryLightbox
         images={images}
         index={lightboxIndex}
@@ -84,54 +101,144 @@ export function PublicPhotoGallery({
         onChangeIndex={setLightboxIndex}
       />
 
-      <div ref={galleryTopRef} className="scroll-mt-24">
-        {variant === "masonry" ? (
-          <div className={cn("columns-1 gap-4 sm:columns-2 lg:columns-3", className)}>
-            {pageImages.map((img, i) => {
-              const globalIndex = start + i;
-              return (
-                <div key={`${page}-${img.src}`} className="mb-4 break-inside-avoid">
-                  <LazyGalleryTile
-                    image={img}
-                    index={globalIndex}
-                    eager={i < eagerCount}
-                    aspectClassName={MASONRY_ASPECTS[globalIndex % MASONRY_ASPECTS.length]}
-                    rounded="xl"
-                    captionSize="xs"
-                    onOpen={setLightboxIndex}
-                  />
-                </div>
-              );
-            })}
+      {/* Main Carousel Card */}
+      <div
+        className="group relative w-full overflow-hidden rounded-2xl border border-border/80 bg-card shadow-lg"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* 16:10 / 4:3 Responsive Main Viewport */}
+        <div
+          onClick={() => setLightboxIndex(currentIndex)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setLightboxIndex(currentIndex);
+            }
+          }}
+          aria-label={`View photo in fullscreen: ${caption}`}
+          className="relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-black/90 cursor-zoom-in flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-burgundy)]"
+        >
+          {/* Ambient blurred backdrop for aesthetic framing */}
+          <Image
+            src={currentImage.src}
+            alt=""
+            aria-hidden="true"
+            fill
+            className="object-cover blur-2xl scale-125 opacity-40 pointer-events-none"
+            quality={45}
+            priority
+          />
+
+          {/* Main Focused Image (object-contain ensures zero distortion or clipping) */}
+          <div className="relative size-full p-2 sm:p-4 flex items-center justify-center">
+            <Image
+              key={currentImage.src}
+              src={currentImage.src}
+              alt={altFromFilename(currentImage.filename)}
+              fill
+              className="object-contain transition-transform duration-500 will-change-transform group-hover:scale-[1.02]"
+              quality={75}
+              priority
+            />
           </div>
-        ) : (
-          <div className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}>
-            {pageImages.map((img, i) => {
-              const globalIndex = start + i;
-              return (
-                <LazyGalleryTile
-                  key={`${page}-${img.src}`}
-                  image={img}
-                  index={globalIndex}
-                  eager={i < eagerCount}
-                  aspectClassName="aspect-[4/3]"
-                  rounded="2xl"
-                  captionSize="sm"
-                  onOpen={setLightboxIndex}
-                />
-              );
-            })}
+
+          {/* Hover Zoom Prompt */}
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur-md opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <ZoomIn className="size-3.5" />
+            <span>Fullscreen</span>
           </div>
-        )}
+
+          {/* Slide Indicator Badge */}
+          <div className="absolute top-4 left-4 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-md">
+            {currentIndex + 1} / {count}
+          </div>
+        </div>
+
+        {/* Previous Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            goPrev();
+          }}
+          aria-label="Previous photo"
+          className="absolute left-3 top-1/2 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <ChevronLeft className="size-5" />
+        </button>
+
+        {/* Next Button */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            goNext();
+          }}
+          aria-label="Next photo"
+          className="absolute right-3 top-1/2 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:scale-110 hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <ChevronRight className="size-5" />
+        </button>
+
+        {/* Caption & Controls Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border/80 bg-card px-4 py-3 sm:px-6">
+          <p className="text-xs sm:text-sm font-medium text-foreground text-center sm:text-left truncate max-w-lg">
+            {caption}
+          </p>
+
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsAutoPlaying((prev) => !prev)}
+              className="h-8 gap-1.5 text-xs"
+            >
+              {isAutoPlaying ? (
+                <>
+                  <Pause className="size-3" /> Pause
+                </>
+              ) : (
+                <>
+                  <Play className="size-3" /> Slideshow
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
       </div>
 
-      <GalleryPagination
-        page={page}
-        totalPages={totalPages}
-        totalItems={images.length}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-      />
-    </>
+      {/* Thumbnail Strip */}
+      <div className="flex items-center justify-center gap-2 overflow-x-auto py-1">
+        {thumbs.map(({ idx, img }) => {
+          const isSelected = idx === currentIndex;
+          return (
+            <button
+              key={`${img.src}-${idx}`}
+              type="button"
+              onClick={() => setCurrentIndex(idx)}
+              aria-label={`Jump to photo ${idx + 1}`}
+              className={`relative size-14 sm:size-16 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+                isSelected
+                  ? "border-[var(--color-burgundy)] ring-2 ring-[var(--color-burgundy)]/30 scale-105"
+                  : "border-transparent opacity-60 hover:opacity-100"
+              }`}
+            >
+              <Image
+                src={img.src}
+                alt=""
+                fill
+                sizes="64px"
+                className="object-cover"
+                quality={45}
+              />
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

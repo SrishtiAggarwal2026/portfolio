@@ -3,7 +3,6 @@
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
-import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import { InfiniteMovingCards } from "@/components/aceternity/infinite-moving-cards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { impactPage } from "@/data/site";
@@ -41,27 +40,6 @@ export default function ImpactPage() {
 
   return (
     <div className="flex min-w-0 flex-col">
-      <section className="relative overflow-hidden py-16 sm:py-20 md:py-28">
-        <BackgroundBeams />
-        <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
-          <div className="text-center lg:text-left">
-            <h1 className="text-balance font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)] sm:text-4xl md:text-5xl">
-              Measuring What Matters
-            </h1>
-            <p className="mt-6 text-pretty text-lg leading-relaxed text-muted-foreground">{impactPage.heroSub}</p>
-          </div>
-          <div className="relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-muted shadow-lg ring-1 ring-[var(--color-burgundy)]/10 lg:mx-0 lg:max-w-none">
-            <Image
-              src={impactPage.heroImage.src}
-              alt={impactPage.heroImage.alt}
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
-        </div>
-      </section>
 
       <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <h2 className="sr-only">Impact pillars</h2>

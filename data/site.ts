@@ -35,7 +35,6 @@ export const navLinks = [
   { href: "/about", label: "About Founder" },
   { href: "/initiative", label: "The Initiative" },
   { href: "/impact", label: "Impact" },
-  { href: "/voices", label: "Voices Unheard" },
   { href: "/timeline", label: "Timeline" },
   { href: "/contact", label: "Get Involved" },
 ] as const;
@@ -139,38 +138,147 @@ export const about = {
     "With Hamari Pahchan team",
   ] as const,
 } as const;
-
 export const initiative = {
+  rightsToReality: {
+    title: "Rights to Reality Advocacy Clinic",
+    subtitle: "Turning Constitutional & Statutory Rights into Lived Dignity",
+    mission:
+      "A right on paper is meaningless if a mother in an urban slum cannot access it. The Rights to Reality Advocacy Clinic exists to bridge the systemic gap between complex government legislation and everyday lived reality. Founded and led by Srishti Aggarwal, the clinic operates directly inside community Anganwadi centres and informal settlements across Delhi NCR — providing plain-language legal literacy, hands-on documentation support, and end-to-end welfare navigation.",
+    whyItMatters: [
+      {
+        title: "The Information Barrier",
+        desc: "Over 70% of eligible women in underserved communities are unaware of life-changing schemes like PMMVY or Sukanya Samriddhi Yojana due to complex bureaucratic jargon.",
+      },
+      {
+        title: "The Documentation Wall",
+        desc: "Minor discrepancies in Aadhaar, bank passbooks, or birth certificates routinely cause applications to be rejected without explanation.",
+      },
+      {
+        title: "Dignified, Peer-Led Advocacy",
+        desc: "Instead of top-down charity, the clinic treats every woman as an equal stakeholder, offering patient, step-by-step paralegal accompaniment.",
+      },
+    ],
+    hubs: [
+      {
+        name: "Noida Sector 8 Anganwadi Hub",
+        tag: "Maternal Welfare & Health",
+        desc: "Weekly clinic desks focused on PMMVY maternity benefits, prenatal nutritional grants, and infant healthcare registration for daily-wage mothers.",
+        stat: "850+ Women Reached",
+      },
+      {
+        name: "Mahipalpur Cluster (Inder & Israel Camps)",
+        tag: "Legal Identity & Welfare Access",
+        desc: "On-ground intake sessions addressing identity documentation, ration entitlements, and girl-child education protection in informal migrant settlements.",
+        stat: "650+ Families Supported",
+      },
+      {
+        name: "Vasant Kunj Anganwadi Centres",
+        tag: "Safety, Helplines & Education",
+        desc: "Legal awareness workshops on women's safety helplines (181), One Stop Crisis Centres (Sakhi), and Right to Education (RTE) private school admissions.",
+        stat: "500+ Beneficiaries Guided",
+      },
+      {
+        name: "Hamari Pahchan Collaborative Base",
+        tag: "Institutional Referral Network",
+        desc: "Strategic NGO partnership providing grassroots community trust, verified paralegal escalation pathways, and physical workshop spaces.",
+        stat: "Official Partnership",
+      },
+    ],
+    methodology: [
+      {
+        step: "01",
+        title: "Safe & Consent-First Intake",
+        desc: "Confidential one-on-one dialogues conducted in familiar community spaces without bureaucratic intimidation.",
+      },
+      {
+        step: "02",
+        title: "Plain-Language Translation",
+        desc: "Demystifying complex government gazettes and scheme eligibility into accessible Hindi brochures and visual guides.",
+      },
+      {
+        step: "03",
+        title: "Document Rectification",
+        desc: "Resolving mismatches in Aadhaar numbers, phone linkings, bank accounts, and institutional delivery certificates.",
+      },
+      {
+        step: "04",
+        title: "Application & Officer Linkage",
+        desc: "Submitting verified paperwork directly through online portals and coordinating with local Anganwadi supervisors.",
+      },
+      {
+        step: "05",
+        title: "Disbursement Tracking",
+        desc: "Maintaining continuous follow-up until financial transfers (DBT) and scheme passbooks are physically realized.",
+      },
+    ],
+    volunteerTraining: {
+      title: "Youth Paralegal Volunteer Program",
+      desc: "Srishti recruited, trained, and mentors 5 student volunteers from The British School and partner institutions. Volunteers undergo comprehensive training in trauma-informed listening, ethical narrative documentation, data privacy, and government portal navigation — creating a replicable, youth-powered grassroots advocacy model.",
+      pillars: [
+        "Trauma-informed & ethical listening protocols",
+        "Scheme eligibility matrix & document checklists",
+        "Informed consent & non-exploitative documentation",
+        "Official portal navigation & follow-up tracking",
+      ],
+    },
+    caseStudies: [
+      {
+        title: "Unlocking PMMVY for a First-Time Mother",
+        location: "Sector 8, Noida",
+        problem: "Pooja, an expectant mother working as domestic support, was denied her ₹6,000 maternity cash benefit for 7 months due to a spelling mismatch between her bank passbook and Aadhaar card.",
+        intervention: "The clinic verified her documents, assisted in an immediate bank KYC update, and filed her online PMMVY claim with the Anganwadi supervisor.",
+        outcome: "Full financial grant credited directly to her account, covering crucial postpartum nutrition and neonatal healthcare.",
+      },
+      {
+        title: "Securing 21-Year Education Fund via SSY",
+        location: "Inder Camp, Mahipalpur",
+        problem: "Sunita, a mother of twin 4-year-old girls, had never heard of Sukanya Samriddhi Yojana and believed formal savings were inaccessible to low-income families.",
+        intervention: "The clinic provided step-by-step guidance, prepared zero-balance post office account paperwork, and initiated the initial deposits.",
+        outcome: "Two official government-backed savings accounts active with high tax-free interest, guaranteeing education funding for both daughters.",
+      },
+      {
+        title: "Enforcing RTE 25% Admission for a 7-Year-Old",
+        location: "Vasant Kunj Cluster",
+        problem: "Ramesh, a sanitation worker, was repeatedly turned away from local schools when seeking Grade 1 admission for his son under the EWS quota.",
+        intervention: "The clinic drafted formal legal representations under Section 12(1)(c) of the Right to Education Act and accompanied the family through verification.",
+        outcome: "Successful admission with zero tuition fee, free school uniforms, and textbooks provided.",
+      },
+    ],
+  },
   cards: [
     {
       title: "Rights to Reality Advocacy Clinic",
-      desc: "Direct support: welfare enrollment, scheme education, follow-up.",
+      desc: "Direct on-ground paralegal support: welfare enrollment, documentation, and sustained follow-up across 4 community hubs.",
     },
     {
       title: "Voices Unheard",
-      desc: "Creative wing: stories adapted into slam poetry for public stages.",
+      desc: "Creative advocacy wing: adapting real community testimony into slam poetry performed at schools and literary stages.",
+    },
+    {
+      title: "Reading Room & Book Bank",
+      desc: "Grassroots community library in Shakurpur in collaboration with SEWA Bharti and Kitaab4U.",
     },
   ] as const,
   accordion: [
     {
-      title: "Scheme Introduction & Education",
+      title: "Scheme Introduction & Legal Education",
       content:
-        "Clear explanations of eligibility, documents, and timelines for key government programmes.",
+        "We translate complex government gazettes and statutory programmes into plain, accessible language with visual brochures and eligibility checklists.",
     },
     {
-      title: "Enrollment Assistance",
+      title: "Hands-on Enrollment & Document Support",
       content:
-        "Hands-on support for PMMVY, Sukanya Samriddhi Yojana, Mahila Shakti Kendra, and One Stop Centre Scheme.",
+        "Dedicated assistance resolving document mismatches, updating bank KYC, filing digital applications, and overcoming bureaucratic friction for PMMVY, Sukanya Samriddhi, and Sakhi schemes.",
     },
     {
-      title: "Volunteer Training",
+      title: "Student Volunteer Training & Ethical Frameworks",
       content:
-        "Five student volunteers trained in ethical intake, consent, and narrative documentation.",
+        "Five student volunteers trained in trauma-informed interviewing, informed consent, non-exploitative narrative collection, and paralegal intake protocols.",
     },
     {
-      title: "Long-term Guidance & Follow-up",
+      title: "End-to-End Tracking & Benefit Realization",
       content:
-        "Ongoing check-ins so enrollment translates into sustained benefit.",
+        "We do not stop at submitting forms. Our team maintains weekly follow-ups with Anganwadi supervisors and portal dashboards until benefits are credited to the beneficiary's hands.",
     },
   ] as const,
   steps: [
