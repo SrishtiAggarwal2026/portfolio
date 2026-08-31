@@ -560,7 +560,7 @@ function WelfareSchemesSection() {
               &ldquo;Know Your Rights. Access Your Benefits. Build Your Future.&rdquo;
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Rights to Reality Advocacy Clinic · In Partnership with Hamari Pehchaan NGO
+              Rights to Reality Advocacy Clinic · In Partnership with Hamari Pahchan NGO
             </p>
           </div>
         </div>

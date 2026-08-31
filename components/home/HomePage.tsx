@@ -176,7 +176,7 @@ export function HomePage({ heroImage }: HomePageProps) {
                 Mahipalpur Camps
               </span>
               <span className="rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-foreground">
-                Partner: Hamari Pehchaan NGO
+                Partner: Hamari Pahchan NGO
               </span>
             </div>
           </motion.div>
