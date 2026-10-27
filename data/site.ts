@@ -2,10 +2,12 @@
 
 export const siteMeta = {
   title: "Voices Unheard",
+  brand: "Rights to Reality - Srishti Aggarwal",
   org: "Rights to Reality Advocacy Clinic",
   founder: "Srishti Aggarwal",
   school: "The British School, New Delhi",
   partnerNgo: "Hamari Pahchan NGO",
+  linkedin: "https://www.linkedin.com/in/srishti-aggarwal-5734303b9/",
   description:
     "A youth-led social initiative empowering underprivileged women through welfare scheme enrollment and slam poetry performed at schools and literary festivals.",
 } as const;
@@ -33,14 +35,14 @@ export const siteSeo = {
 export const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Founder" },
-  { href: "/initiative", label: "The Initiative" },
+  { href: "/initiative", label: "Initiative" },
   { href: "/impact", label: "Impact" },
+  { href: "/voices", label: "Voices Unheard" },
   { href: "/timeline", label: "Timeline" },
   { href: "/contact", label: "Get Involved" },
 ] as const;
 
 export const home = {
-  flipWords: ["Heard", "Seen", "Empowered", "Amplified"] as const,
   heroSub:
     "A 12-month advocacy movement transforming real stories into slam poetry — bridging privileged spaces with marginalized voices.",
   stats: [
@@ -49,41 +51,13 @@ export const home = {
     { value: 2500, suffix: " USD", label: "IB Global Grant" },
     { value: 12, suffix: "", label: "Months of Impact" },
   ] as const,
-  rightsToReality: {
-    title: "Rights to Reality Advocacy Clinic",
-    eyebrow: "Core Initiative",
-    lead: "Bridging the gap between government policy on paper and lived reality for underprivileged women and children across Delhi/NCR.",
-    body: [
-      "Founded by Srishti Aggarwal in partnership with Hamari Pahchan NGO, the Rights to Reality Advocacy Clinic operates through sustained grassroots outreach across Anganwadi Centres in Noida (Sector 8), Vasant Kunj, Inder Camp, and Israel Camp (Mahipalpur).",
-      "While numerous welfare schemes exist, marginalized families often face critical barriers: complex documentation, lack of digital access, and procedural intimidation. The clinic conducts weekly on-ground sessions to guide women through verified scheme enrollment—securing maternity benefits (PMMVY), girl child savings (Sukanya Samriddhi), and legal protection.",
-      "Rooted in empathy and measurable social impact, the initiative has directly reached over 2,000 women and positively impacted 800+ children, earning international recognition through the International Baccalaureate (IB) Global Youth Action Fund.",
-    ],
-    pillars: [
-      {
-        title: "Welfare Scheme Enrollment",
-        desc: "Hands-on application and documentation support for PMMVY (up to ₹6,000), Sukanya Samriddhi Yojana, Mahila Shakti Kendra, and healthcare aid.",
-        badge: "Direct Support",
-      },
-      {
-        title: "Safety & Legal Literacy",
-        desc: "Connecting women in crisis with 24x7 Women Helpline 181, One Stop Centres (Sakhi), and free legal counselling against abuse.",
-        badge: "Protection",
-      },
-      {
-        title: "Educational Access & RTE",
-        desc: "Facilitating 25% private school reservations under Right to Education (RTE), NMMSS scholarships, and community reading rooms.",
-        badge: "Education",
-      },
-      {
-        title: "Voices Unheard Creative Wing",
-        desc: "Documenting 100+ lived stories with informed consent and transforming grassroots realities into slam poetry for public stages.",
-        badge: "Storytelling",
-      },
+  whatIs: {
+    body: `Voices Unheard pairs on-the-ground welfare advocacy with ethical storytelling. Weekly sessions build trust; documented stories become slam poetry that travels to schools and festivals — so marginalized voices are present in privileged spaces.`,
+    steps: [
+      { title: "Weekly Sessions", desc: "Scheme education & enrollment support" },
+      { title: "Story Collection", desc: "Consent-based documentation with dignity" },
+      { title: "Poetry Performance", desc: "Slam poetry at schools & festivals" },
     ] as const,
-  },
-  venn: {
-    circles: ["Privileged Youth", "Marginalized Communities", "Voices Unheard"] as const,
-    center: "Poetry & Advocacy",
   },
   poemTicker: [
     "Silence is not absence — it is a room waiting for a microphone.",
@@ -96,19 +70,20 @@ export const home = {
 
 export const about = {
   tagline:
-    "Turning lived experiences into poems. Turning poems into policy conversations.",
+    "Turning lived experiences into slam poems. Turning slam poems into policy conversations.",
   badges: [
     "Founder · Rights to Reality",
-    "Founder · Shakurpur Reading Room",
+    "Co-Founder · Shakurpur Reading Room",
     "IB Global Youth Action Fund Winner",
+    "F1 in Schools World Finalist · Team Blaze",
     "Student · The British School, New Delhi",
-    "Advocacy · Hamari Pahchan NGO",
+    "Advocate · Hamari Pahchan NGO",
   ] as const,
   story: {
     beginning: `Srishti began volunteering with Hamari Pahchan NGO in November 2024, assisting underprivileged women with welfare scheme documentation and education access in slum communities around Delhi. What started as practical advocacy quickly became something deeper — she was listening.`,
     turning: `Through 12 months of weekly on-ground sessions, Srishti documented 100+ life stories with informed consent. She observed a fundamental gap: even in the same city, marginalized voices were entirely absent from mainstream narratives. Schools, festivals, and public discourse were missing the stories of the women she sat beside every week.`,
     voices: `Srishti founded Voices Unheard as a creative sub-initiative — adapting ten of the most powerful stories into slam poetry, which she performs at school events and literary festivals. She also recruited and trained five student volunteers in ethical storytelling and consent-based narrative collection.`,
-    clinic: `Her primary vehicle is the Rights to Reality Advocacy Clinic, where she works across Anganwadi Centres in Sector 8, Noida, as well as multiple Anganwadi Centres in Vasant Kunj, Inder Camp, and Israel Camp in the Mahipalpur area. In collaboration with Hamari Pahchan NGO, she leads weekly sessions and has conducted awareness programs on government schemes like PMMVY, Sukanya Samriddhi, Mahila Shakti Kendra, and One Stop Centre. To date, the initiative has reached over 2,000 women and positively impacted more than 800 children.`,
+    clinic: `Her primary vehicle is the Rights to Reality Advocacy Clinic, where she works across Anganwadi Centres in Sector 8, Noida, as well as multiple Anganwadi Centres in Vasant Kunj, Inder Camp, and Israel Camp in the Mahipalpur area. In collaboration with Hamari Pehchaan NGO, she leads weekly sessions and has conducted awareness programs on government schemes like PMMVY, Sukanya Samriddhi, Mahila Shakti Kendra, and One Stop Centre. To date, the initiative has reached over 2,000 women and positively impacted more than 800 children.`,
   },
   values: [
     { title: "Ethical Storytelling", desc: "Consent and dignity at every step." },
@@ -138,345 +113,187 @@ export const about = {
     "With Hamari Pahchan team",
   ] as const,
 } as const;
+
 export const initiative = {
-  rightsToReality: {
-    title: "Rights to Reality Advocacy Clinic",
-    subtitle: "Turning Constitutional & Statutory Rights into Lived Dignity",
-    mission:
-      "A right on paper is meaningless if a mother in an urban slum cannot access it. The Rights to Reality Advocacy Clinic exists to bridge the systemic gap between complex government legislation and everyday lived reality. Founded and led by Srishti Aggarwal, the clinic operates directly inside community Anganwadi centres and informal settlements across Delhi NCR — providing plain-language legal literacy, hands-on documentation support, and end-to-end welfare navigation.",
-    whyItMatters: [
-      {
-        title: "The Information Barrier",
-        desc: "Over 70% of eligible women in underserved communities are unaware of life-changing schemes like PMMVY or Sukanya Samriddhi Yojana due to complex bureaucratic jargon.",
-      },
-      {
-        title: "The Documentation Wall",
-        desc: "Minor discrepancies in Aadhaar, bank passbooks, or birth certificates routinely cause applications to be rejected without explanation.",
-      },
-      {
-        title: "Dignified, Peer-Led Advocacy",
-        desc: "Instead of top-down charity, the clinic treats every woman as an equal stakeholder, offering patient, step-by-step paralegal accompaniment.",
-      },
-    ],
-    hubs: [
-      {
-        name: "Noida Sector 8 Anganwadi Hub",
-        tag: "Maternal Welfare & Health",
-        desc: "Weekly clinic desks focused on PMMVY maternity benefits, prenatal nutritional grants, and infant healthcare registration for daily-wage mothers.",
-        stat: "850+ Women Reached",
-      },
-      {
-        name: "Mahipalpur Cluster (Inder & Israel Camps)",
-        tag: "Legal Identity & Welfare Access",
-        desc: "On-ground intake sessions addressing identity documentation, ration entitlements, and girl-child education protection in informal migrant settlements.",
-        stat: "650+ Families Supported",
-      },
-      {
-        name: "Vasant Kunj Anganwadi Centres",
-        tag: "Safety, Helplines & Education",
-        desc: "Legal awareness workshops on women's safety helplines (181), One Stop Crisis Centres (Sakhi), and Right to Education (RTE) private school admissions.",
-        stat: "500+ Beneficiaries Guided",
-      },
-      {
-        name: "Hamari Pahchan Collaborative Base",
-        tag: "Institutional Referral Network",
-        desc: "Strategic NGO partnership providing grassroots community trust, verified paralegal escalation pathways, and physical workshop spaces.",
-        stat: "Official Partnership",
-      },
-    ],
-    methodology: [
-      {
-        step: "01",
-        title: "Safe & Consent-First Intake",
-        desc: "Confidential one-on-one dialogues conducted in familiar community spaces without bureaucratic intimidation.",
-      },
-      {
-        step: "02",
-        title: "Plain-Language Translation",
-        desc: "Demystifying complex government gazettes and scheme eligibility into accessible Hindi brochures and visual guides.",
-      },
-      {
-        step: "03",
-        title: "Document Rectification",
-        desc: "Resolving mismatches in Aadhaar numbers, phone linkings, bank accounts, and institutional delivery certificates.",
-      },
-      {
-        step: "04",
-        title: "Application & Officer Linkage",
-        desc: "Submitting verified paperwork directly through online portals and coordinating with local Anganwadi supervisors.",
-      },
-      {
-        step: "05",
-        title: "Disbursement Tracking",
-        desc: "Maintaining continuous follow-up until financial transfers (DBT) and scheme passbooks are physically realized.",
-      },
-    ],
-    volunteerTraining: {
-      title: "Youth Paralegal Volunteer Program",
-      desc: "Srishti recruited, trained, and mentors 5 student volunteers from The British School and partner institutions. Volunteers undergo comprehensive training in trauma-informed listening, ethical narrative documentation, data privacy, and government portal navigation — creating a replicable, youth-powered grassroots advocacy model.",
-      pillars: [
-        "Trauma-informed & ethical listening protocols",
-        "Scheme eligibility matrix & document checklists",
-        "Informed consent & non-exploitative documentation",
-        "Official portal navigation & follow-up tracking",
-      ],
-    },
-    caseStudies: [
-      {
-        title: "Unlocking PMMVY for a First-Time Mother",
-        location: "Sector 8, Noida",
-        problem: "Pooja, an expectant mother working as domestic support, was denied her ₹6,000 maternity cash benefit for 7 months due to a spelling mismatch between her bank passbook and Aadhaar card.",
-        intervention: "The clinic verified her documents, assisted in an immediate bank KYC update, and filed her online PMMVY claim with the Anganwadi supervisor.",
-        outcome: "Full financial grant credited directly to her account, covering crucial postpartum nutrition and neonatal healthcare.",
-      },
-      {
-        title: "Securing 21-Year Education Fund via SSY",
-        location: "Inder Camp, Mahipalpur",
-        problem: "Sunita, a mother of twin 4-year-old girls, had never heard of Sukanya Samriddhi Yojana and believed formal savings were inaccessible to low-income families.",
-        intervention: "The clinic provided step-by-step guidance, prepared zero-balance post office account paperwork, and initiated the initial deposits.",
-        outcome: "Two official government-backed savings accounts active with high tax-free interest, guaranteeing education funding for both daughters.",
-      },
-      {
-        title: "Enforcing RTE 25% Admission for a 7-Year-Old",
-        location: "Vasant Kunj Cluster",
-        problem: "Ramesh, a sanitation worker, was repeatedly turned away from local schools when seeking Grade 1 admission for his son under the EWS quota.",
-        intervention: "The clinic drafted formal legal representations under Section 12(1)(c) of the Right to Education Act and accompanied the family through verification.",
-        outcome: "Successful admission with zero tuition fee, free school uniforms, and textbooks provided.",
-      },
-    ],
-  },
   cards: [
     {
-      title: "Rights to Reality Advocacy Clinic",
-      desc: "Direct on-ground paralegal support: welfare enrollment, documentation, and sustained follow-up across 4 community hubs.",
+      title: "Advocacy Clinic & Welfare Access",
+      desc: "Weekly Anganwadi sessions guiding women through welfare scheme documentation, legal protections, and government entitlements.",
+      image: "/Pillars%20Of%20Change/Advocacy%20Clinics/1%20Right%20Of%20Reality%20.jpeg",
+      tag: "Grassroots Action",
+      href: "#clinic",
     },
     {
-      title: "Voices Unheard",
-      desc: "Creative advocacy wing: adapting real community testimony into slam poetry performed at schools and literary stages.",
+      title: "Voices Unheard: Slam Poetry Performance",
+      desc: "Transforming lived community conversations into spoken-word poetry performed across school assemblies and literary festivals.",
+      image: "/Pillars%20Of%20Change/Voices%20Unheard%20%26%20Slam%20Poetry%20Performance/2.jpeg",
+      tag: "Stage Advocacy",
+      href: "#process",
     },
     {
-      title: "Reading Room & Book Bank",
-      desc: "Grassroots community library in Shakurpur in collaboration with SEWA Bharti and Kitaab4U.",
+      title: "F-1 World National Finals, Marketing & Social initiative",
+      desc: "Representing India at World & National Finals managing marketing, sustainability strategy, pit display design, and Women in STEM campaigns.",
+      image: "/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg",
+      tag: "Marketing & Social initiative",
+      href: "#f1",
+    },
+    {
+      title: "Community Reading & Literacy Hub",
+      desc: "Establishing community reading sanctuaries paired with educator training workshops alongside SEWA Bharti and Kitaab4U.",
+      image: "/Pillars%20Of%20Change/Teacher%20Training%20Program/1.jpeg",
+      tag: "Community Literacy",
+      href: "#reading-room",
     },
   ] as const,
   accordion: [
     {
-      title: "Scheme Introduction & Legal Education",
+      title: "Scheme Education & Guidance",
       content:
-        "We translate complex government gazettes and statutory programmes into plain, accessible language with visual brochures and eligibility checklists.",
+        "Clear breakdowns of eligibility, required documentation, and timelines for government schemes.",
     },
     {
-      title: "Hands-on Enrollment & Document Support",
+      title: "Hands-on Enrollment Assistance",
       content:
-        "Dedicated assistance resolving document mismatches, updating bank KYC, filing digital applications, and overcoming bureaucratic friction for PMMVY, Sukanya Samriddhi, and Sakhi schemes.",
+        "Direct support for PMMVY, Sukanya Samriddhi, and social protection application submissions.",
     },
     {
-      title: "Student Volunteer Training & Ethical Frameworks",
+      title: "Volunteer Training & Ethics",
       content:
-        "Five student volunteers trained in trauma-informed interviewing, informed consent, non-exploitative narrative collection, and paralegal intake protocols.",
+        "Student volunteers trained in informed consent, dignity-first intake, and respectful documentation.",
     },
     {
-      title: "End-to-End Tracking & Benefit Realization",
+      title: "Dedicated Follow-up & Verification",
       content:
-        "We do not stop at submitting forms. Our team maintains weekly follow-ups with Anganwadi supervisors and portal dashboards until benefits are credited to the beneficiary's hands.",
+        "Routine check-ins to ensure verified benefits reach the beneficiary bank accounts.",
     },
   ] as const,
   steps: [
-    "Trust-Building & Community Engagement",
-    "Ethical Story Listening Workshops",
-    "Collaborative Documentation with Volunteers",
-    "Poetry Crafting & Authenticity Preservation",
-    "Community Feedback & Validation",
-    "Performance & Advocacy at Schools/Festivals",
+    { title: "Listen", desc: "Community dialogue with empathy and dignity" },
+    { title: "Consent", desc: "Informed, written permission before any story moves" },
+    { title: "Craft", desc: "Transforming real narratives into poetic stanzas" },
+    { title: "Perform", desc: "Amplifying voices on school and festival stages" },
   ] as const,
   schemes: [
     {
       name: "PMMVY",
+      tag: "Maternal Health",
       full: "Pradhan Mantri Matru Vandana Yojana",
-      category: "Women's Welfare",
-      desc: "Direct financial assistance for pregnant women and lactating mothers to improve health and nutrition.",
-      benefit: "Up to ₹6,000",
-      who: "Pregnant women (19+ years)",
-      points: ["Nutritional support", "Cash transfer in instalments", "Institutional delivery incentive"],
+      who: "Pregnant women & lactating mothers (₹5,000 direct benefit transfer).",
+    },
+    {
+      name: "Sukanya Samriddhi",
+      tag: "Girl Child",
+      full: "Sukanya Samriddhi Yojana",
+      who: "Girl children under 10 — high-interest savings for education and marriage.",
     },
     {
       name: "Mahila Shakti Kendra",
+      tag: "Empowerment",
       full: "Mahila Shakti Kendra Scheme",
-      category: "Women's Welfare",
-      desc: "Empowers rural and community women through skill development, employment training, and digital literacy.",
-      benefit: "Skill & livelihood training",
-      who: "Women seeking skills and economic independence",
-      points: ["Skill development", "Employment support", "Digital literacy"],
+      who: "Rural & peri-urban women seeking skill training, digital literacy, and rights.",
     },
     {
-      name: "Working Women Hostel",
-      full: "Working Women Hostel Scheme",
-      category: "Women's Welfare",
-      desc: "Safe and affordable accommodation for working women in urban and rural areas with daycare facilities.",
-      benefit: "Safe lodging & daycare",
-      who: "Working women with or without children",
-      points: ["Safe stay", "Childcare support", "Affordable housing"],
-    },
-    {
-      name: "One Stop Centre (Sakhi)",
+      name: "One Stop Centre",
+      tag: "Crisis Support",
       full: "One Stop Centre Scheme",
-      category: "Safety & Legal",
-      desc: "Provides immediate and integrated 24/7 support to women facing violence or harassment under one roof.",
-      benefit: "24/7 Emergency support",
-      who: "Women affected by violence in private or public spaces",
-      points: ["Police assistance", "Medical aid", "Legal aid & counsel", "Counselling", "Shelter support"],
-    },
-    {
-      name: "Women Helpline – 181",
-      full: "National Women Helpline (181)",
-      category: "Safety & Legal",
-      desc: "24x7 confidential toll-free emergency helpline providing crisis intervention and government scheme guidance.",
-      benefit: "Toll-Free 24/7 (Dial 181)",
-      who: "Women in distress or needing scheme information",
-      points: ["Emergency response", "Confidential help", "Scheme information", "Free & safe"],
-    },
-    {
-      name: "Ujjwala Scheme",
-      full: "Comprehensive Anti-Trafficking Scheme",
-      category: "Safety & Legal",
-      desc: "Comprehensive support for women and children who are victims of trafficking and commercial exploitation.",
-      benefit: "Rehabilitation & care",
-      who: "Victims of trafficking and vulnerable women",
-      points: ["Shelter & food", "Medical care", "Legal aid", "Vocational training", "Reintegration"],
-    },
-    {
-      name: "Sukanya Samriddhi Yojana",
-      full: "Sukanya Samriddhi Yojana (SSY)",
-      category: "Girls & Children",
-      desc: "High-interest, tax-free savings scheme securing the girl child's future education and marriage.",
-      benefit: "High interest + 80C Tax Exemption",
-      who: "Girl children under 10 years of age",
-      points: ["Deposit: ₹250 – ₹1.5 lakh / yr", "Tenure: 21 years from opening", "Attractive tax-free interest"],
-    },
-    {
-      name: "Beti Bachao Beti Padhao",
-      full: "Beti Bachao Beti Padhao (BBBP)",
-      category: "Girls & Children",
-      desc: "National initiative promoting the survival, protection, and higher education of the girl child.",
-      benefit: "Welfare & educational access",
-      who: "Girl children and families across communities",
-      points: ["Awareness campaigns", "Education & empowerment", "Improving child sex ratio"],
-    },
-    {
-      name: "Apki Beti Hamari Beti",
-      full: "Apki Beti Hamari Beti Scheme",
-      category: "Girls & Children",
-      desc: "Financial assistance and education support program specifically designed for girl children in underserved households.",
-      benefit: "Government financial grant",
-      who: "First and second girl children in eligible families",
-      points: ["Direct financial support", "Encourages school retention", "Combats gender discrimination"],
-    },
-    {
-      name: "Right to Education (RTE)",
-      full: "Right of Children to Free & Compulsory Education Act",
-      category: "Education Support",
-      desc: "Guarantees free and compulsory elementary education for every child in India aged 6 to 14 years.",
-      benefit: "Free education + 25% Private Quota",
-      who: "Children aged 6 to 14 years",
-      points: ["No child denied admission", "25% reservation in private schools for EWS", "Free uniforms and books"],
-    },
-    {
-      name: "National Means-cum-Merit Scholarship",
-      full: "NMMSS Central Scholarship Scheme",
-      category: "Education Support",
-      desc: "Direct financial stipend awarded to meritorious students from economically weaker sections to continue secondary school.",
-      benefit: "₹12,000 / year stipend",
-      who: "Meritorious students in Classes 9 to 12",
-      points: ["₹12,000 annual scholarship", "For Class 9 to 12 students", "Merit + means based selection"],
-    },
-    {
-      name: "National Scholarship Portal",
-      full: "Unified Scholarship Platform (scholarships.gov.in)",
-      category: "Education Support",
-      desc: "Single online portal providing access to central, state, and UGC scholarships across schools and colleges.",
-      benefit: "Access to 50+ Scholarships",
-      who: "School and college students nationwide",
-      points: ["Pre-matric & post-matric scholarships", "College financial aid", "Direct application tracking"],
-    },
-  ] as const,
-  clinicSupport: [
-    {
-      title: "Understand Schemes",
-      desc: "We explain complex government eligibility, criteria, and documentation in simple, accessible language.",
-      emoji: "📋",
-    },
-    {
-      title: "Application Support",
-      desc: "Hands-on guidance filling forms, verifying required documents, and submitting applications.",
-      emoji: "✍️",
-    },
-    {
-      title: "Access Benefits",
-      desc: "Continuous follow-up ensuring submitted applications successfully translate into received benefits.",
-      emoji: "🤝",
-    },
-    {
-      title: "Education Opportunities",
-      desc: "Connecting students to scholarships, book banks, and educational mentoring programs.",
-      emoji: "🎓",
-    },
-    {
-      title: "Helplines & Referrals",
-      desc: "Guiding women and families to 24x7 verified emergency helplines, One Stop Centres, and legal aid.",
-      emoji: "🎧",
+      who: "Women facing violence or distress — medical, legal, and counseling aid.",
     },
   ] as const,
 } as const;
 
+export const f1Data = {
+  title: "F-1 World National Finals, Marketing & Social initiative",
+  team: "Team Blaze",
+  school: "The British School, New Delhi",
+  role: "Marketing, Budget Control and Sustainability Manager",
+  tagline: "Represented India at the F-1 World National Finals",
+  summary:
+    "Represented India at the F-1 World National Finals as Marketing, Budget Control and Sustainability Manager for Team Blaze (The British School). Directed the team's branding and communication, managed budget and financial planning, and worked on incorporating sustainability into the project. Led a Women in STEM interview campaign highlighting representation and workplace experiences, handled social media, conducted school-wide awareness fairs, arranged corporate sponsors, and designed the team's official pit display.",
+  highlights: [
+    {
+      title: "Women in STEM Campaign",
+      desc: "Conceived and led an interview campaign highlighting female representation, workplace experiences, and STEM pathways.",
+      emoji: "👩‍🔬",
+    },
+    {
+      title: "Marketing & Communication",
+      desc: "Directed Team Blaze's branding, public communication strategy, and managed high-impact social media campaigns.",
+      emoji: "📢",
+    },
+    {
+      title: "Budget Control & Sponsors",
+      desc: "Helped manage project budget, financial planning, resource allocation, and arranged corporate sponsors.",
+      emoji: "💼",
+    },
+    {
+      title: "Sustainability Manager",
+      desc: "Spearheaded sustainable practices and environmental integration throughout the car build and presentation.",
+      emoji: "🌱",
+    },
+    {
+      title: "Pit Display Design",
+      desc: "Designed and engineered the official competition pit display showcasing the team's engineering and marketing achievements.",
+      emoji: "🏎️",
+    },
+    {
+      title: "School Awareness Fair",
+      desc: "Organized hands-on STEM and F1 awareness fairs across The British School to inspire and engage younger students.",
+      emoji: "🎯",
+    },
+  ] as const,
+  bulletPoints: [
+    "Represented India at the F1 in Schools World Finals with Team Blaze",
+    "Served as Marketing, Budget Control and Sustainability Manager",
+    "Led the 'Women in STEM' interview campaign spotlighting representation and workplace experiences",
+    "Directed branding, communication, and social media outreach",
+    "Managed budget, financial planning, and arranged corporate sponsorships",
+    "Designed and executed the team's official competition pit display and conducted school awareness fairs",
+  ] as const,
+  media: {
+    poster: "/in-the-communities/f1.png",
+    teamPhoto: "/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg",
+  },
+} as const;
+
 export const readingRoom = {
-  title: "Building a Community Reading Room with SEWA Bharti & Kitaab4U",
+  title: "Community Reading Room & Teacher Training Programme",
   location: "Shakurpur, Delhi",
   partner: "SEWA Bharti & Kitaab4U",
   lead: "Srishti Aggarwal & Vedika",
   paragraphs: [
-    "As part of her commitment to promoting literacy and expanding access to educational resources, Srishti Aggarwal collaborated with SEWA Bharti and Kitaab4U to establish a Reading Room and Book Bank in Shakurpur, Delhi.",
-    "The initiative was created to provide children from the local community with a dedicated space where regular reading sessions could be conducted, encouraging a culture of reading, curiosity, and lifelong learning. The Reading Room serves as a safe and accessible environment where children can explore books beyond their school curriculum and strengthen their literacy skills.",
-    "The project was a joint initiative by Srishti Aggarwal and Vedika. Through her ongoing social initiative, Kitaab4U, Vedika led the collection of books from the community, while Srishti contributed by donating the book racks required to establish the Book Bank and supporting the collection of additional books. Together, they helped build a resource-rich learning space that will continue to benefit children for years to come.",
-    "By combining community participation with meaningful youth leadership, the initiative transformed a simple idea into a sustainable educational resource, ensuring that children have greater access to books and opportunities to develop a lifelong love for reading.",
+    "A joint initiative by Srishti Aggarwal and Vedika (founder of Kitaab4U), in collaboration with SEWA Bharti, establishing a safe community learning sanctuary and teacher training hub in Shakurpur, Delhi.",
+    "Vedika mobilised community book drives collecting 100+ titles, while Srishti provided the structural book racks, teacher training resources, and educational materials to create a lasting, accessible ecosystem for educators and children.",
   ],
   highlights: [
     {
       emoji: "📚",
-      title: "Reading Room & Book Bank",
-      desc: "Established a Reading Room and Book Bank at SEWA Bharti, Shakurpur, to promote literacy among children.",
+      title: "100+ Shelved Books",
+      desc: "Curated collection spanning early literacy, storybooks, and foundational learning.",
     },
     {
       emoji: "🤝",
       title: "Youth Collaboration",
-      desc: "Joint initiative by Srishti Aggarwal and Vedika, combining their efforts to create a sustainable community learning space.",
-    },
-    {
-      emoji: "📖",
-      title: "Book Drive by Kitaab4U",
-      desc: "Vedika, through her social initiative Kitaab4U, led the collection of donated books for the Reading Room.",
+      desc: "Srishti & Vedika (Kitaab4U) combined efforts to build sustainable community infrastructure.",
     },
     {
       emoji: "🗂️",
-      title: "Infrastructure & Book Donation",
-      desc: "Srishti donated the book racks required to establish the Book Bank and contributed additional books to expand the collection.",
+      title: "Book Racks & Setup",
+      desc: "Structural library shelving and materials donated to establish a permanent resource space.",
     },
     {
-      emoji: "👧",
-      title: "Dedicated Learning Space",
-      desc: "Created a dedicated space where regular reading sessions can be conducted, encouraging reading habits and improving access to educational resources.",
+      emoji: "👩‍🏫",
+      title: "Teacher Training",
+      desc: "Workshops empowering local educators with modern foundational literacy pedagogy.",
     },
     {
       emoji: "🌱",
-      title: "Community Impact",
-      desc: "Strengthened community learning by providing children with free access to books in a safe, welcoming, and engaging environment.",
-    },
-    {
-      emoji: "💙",
-      title: "Lasting Educational Change",
-      desc: "Demonstrated the power of collaborative youth-led initiatives in creating lasting educational impact for underserved communities.",
+      title: "Safe Community Space",
+      desc: "Weekly reading circles hosted at SEWA Bharti Center empowering local children.",
     },
   ] as const,
   media: [
+    { type: "image", src: "/books/teacher-training-session-1.jpg", alt: "Teacher training workshop in Shakurpur" },
+    { type: "image", src: "/books/teacher-training-session-2.jpg", alt: "Educator engagement and foundational learning pedagogy" },
     { type: "image", src: "/books/Reading room 1.jpeg", alt: "Children reading in Shakurpur Reading Room" },
     { type: "image", src: "/books/Reading Room 2.jpeg", alt: "Book bank shelves and students" },
     { type: "image", src: "/books/Reading room 4.jpeg", alt: "Reading session in progress" },
@@ -490,43 +307,43 @@ export const readingRoom = {
 } as const;
 
 export const impactPage = {
-  heroSub: `Impact isn't just in numbers. It's in the student who volunteers for the first time, the community member who feels heard.`,
+  heroSub: "Concrete welfare access, youth citizenship in action, and marginalized voices amplified on public stages.",
   heroImage: {
-    src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1400&q=80",
-    alt: "A diverse group of children and adults smiling together outdoors",
+    src: "/images/2026_work_6.jpeg",
+    alt: "Srishti Aggarwal presenting the Rights to Reality government welfare scheme guides during on-ground outreach",
   },
   pillars: [
     {
-      title: "Impact on Communities",
-      imageSrc:
-        "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&h=600&q=80",
-      imageAlt: "People joining hands in a circle, representing community solidarity",
+      title: "Communities & Families",
+      imageSrc: "/images/2026_work_2.jpeg",
+      imageAlt: "Community outreach and legal awareness session in Sector 8, Noida",
+      stat: "2,000+ Women",
       bullets: [
-        "Voices documented with informed consent",
-        "Dignity-centered intake and follow-up",
-        "Representation in privileged cultural spaces",
+        "Informed consent at every interaction",
+        "Direct welfare scheme enrollments",
+        "Lived realities voiced in public spheres",
       ],
     },
     {
-      title: "Impact on Students & Youth",
-      imageSrc:
-        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&h=600&q=80",
-      imageAlt: "Students studying together at a shared table",
+      title: "Students & Youth Volunteers",
+      imageSrc: "/images/2026_work_5.jpeg",
+      imageAlt: "Student volunteer assisting community members with scheme documentation",
+      stat: "5 Trained Peers",
       bullets: [
-        "Empathy over stereotypes",
-        "Active citizenship in practice",
-        "First-time volunteers building habits of service",
+        "Active citizenship beyond classroom theory",
+        "Ethical listening and dignity-first intake",
+        "Long-term culture of community service",
       ],
     },
     {
-      title: "Broader Societal Impact",
-      imageSrc:
-        "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=600&h=600&q=80",
-      imageAlt: "Hands joined in unity against a bright sky",
+      title: "Societal Dialogue",
+      imageSrc: "/in-the-communities/voice-unheard-theatre.jpg",
+      imageAlt: "Voices Unheard slam poetry performance amplifying community narratives on public stages",
+      stat: "10 Slam Poems",
       bullets: [
-        "Literature as an advocacy tool",
-        "Bridges between schools and NGOs",
-        "A replicable model for peer chapters",
+        "Slam poetry as an advocacy catalyst",
+        "Connecting grassroots to premier schools",
+        "Replicable youth action blueprint",
       ],
     },
   ] as const,
@@ -534,44 +351,49 @@ export const impactPage = {
     { label: "Women Reached", value: 2000, suffix: "+" },
     { label: "Children Impacted", value: 800, suffix: "+" },
     { label: "IB Global Grant", value: 2500, suffix: " USD" },
-    { label: "Poems Performed", value: 10, suffix: "" },
+    { label: "Original Stanzas", value: 10, suffix: " Poems" },
   ] as const,
   testimonials: [
     {
       quote:
-        "Someone explained the forms in plain language and stayed with me until the application was submitted — I didn’t feel rushed.",
-      name: "Community participant",
-      role: "Mahipalpur",
+        "Someone explained the forms in plain language and stayed with me until submission — I didn’t feel rushed.",
+      name: "Community Participant",
+      role: "Mahipalpur Clinic",
     },
     {
       quote:
-        "Training in consent-based documentation changed how I listen. It feels like real citizenship, not a checkbox activity.",
-      name: "Student volunteer",
+        "Training in consent-based listening changed how I see my city. It feels like real citizenship.",
+      name: "Student Volunteer",
       role: "The British School",
     },
     {
       quote:
-        "When poetry meets welfare work, people see themselves reflected with dignity — not reduced to numbers on a slide.",
-      name: "Programme collaborator",
+        "When poetry meets welfare work, women see themselves reflected with dignity.",
+      name: "Field Collaborator",
       role: "Hamari Pahchan NGO",
     },
   ] as const,
   sdg: {
     title: "SDG 10 — Reduced Inequalities",
     body:
-      "Closing gaps in welfare access and whose stories appear in schools and festivals — concrete steps toward more equal voice and opportunity.",
-    also: "Also contributing to SDG 4 (Quality Education) and SDG 5 (Gender Equality).",
+      "Bridging the resource and awareness gap between privileged institutions and peri-urban settlements through direct scheme enrollment and narrative representation.",
+    also: "Also advancing SDG 4 (Quality Education) and SDG 5 (Gender Equality).",
   },
 } as const;
 
 export const voicesPage = {
   heroSub:
-    "Ethical documentation meets performance poetry — so stories travel farther than any single neighbourhood.",
-  flow: ["Real Story", "Ethical Documentation", "Slam Poetry", "Performed on Stage"] as const,
+    "Ethical documentation meets performance poetry — transforming kitchen-table conversations into catalysts for change.",
+  flow: [
+    { step: "01", title: "Listen", desc: "Weekly community conversations in Anganwadis" },
+    { step: "02", title: "Consent", desc: "Informed, respectful permission to share" },
+    { step: "03", title: "Craft", desc: "Preserving raw authenticity in verse" },
+    { step: "04", title: "Perform", desc: "Stage advocacy at schools and festivals" },
+  ] as const,
   performances: [
-    { event: "Winter Literary Evening", date: "2026-02-14", venue: "New Delhi", status: "Upcoming" as const },
-    { event: "School Assembly Feature", date: "2025-11-20", venue: "The British School", status: "Past" as const },
-    { event: "Community Festival", date: "2026-04-05", venue: "New Delhi", status: "Upcoming" as const },
+    { event: "Winter Literary Evening", date: "Feb 2026", venue: "New Delhi", status: "Upcoming" as const },
+    { event: "School Assembly Feature", date: "Nov 2025", venue: "The British School", status: "Past" as const },
+    { event: "Community Festival Stage", date: "Apr 2026", venue: "New Delhi", status: "Upcoming" as const },
   ] as const,
 } as const;
 
@@ -579,51 +401,70 @@ export const timelineData = {
   phases: [
     {
       id: "p1",
+      number: "01",
       title: "November 2024",
+      headline: "Grassroots Volunteering & Direct Immersion",
+      summary:
+        "Began on-the-ground volunteering with Hamari Pahchan NGO in underserved Delhi settlements, listening directly to families and navigating public assistance paperwork.",
+      location: "Slum communities across Delhi",
+      badge: "Grassroots Foundation",
+      stat: "Ground-Level Intake",
       dot: "burgundy" as const,
       items: [
-        "Began volunteering with Hamari Pahchan",
-        "Assisted women with welfare documentation",
-        "Observed gaps in awareness and follow-up",
+        "Volunteered weekly with Hamari Pahchan NGO across peri-urban settlements in Delhi",
+        "Assisted women directly with welfare documentation, birth certificates, and ID cards",
+        "Identified systemic bottlenecks in public awareness, digital barriers, and scheme enrollment follow-through",
       ],
     },
     {
       id: "p2",
+      number: "02",
       title: "Mid 2025",
+      headline: "Clinic Formalisation & Peer Volunteer Network",
+      summary:
+        "Standardised the Rights to Reality Advocacy Clinic model and trained a team of 5 student volunteers from The British School in dignity-first intake and consent protocols.",
+      location: "Mahipalpur & Sector 8 Noida",
+      badge: "Institutional Structure",
+      stat: "5 Trained Peers",
       dot: "gold" as const,
       items: [
-        "Formalised Rights to Reality Advocacy Clinic",
-        "Recruited and trained 5 student volunteers",
-        "Launched baseline surveys in Mahipalpur",
-        "Designed scheme-awareness measurement tools",
+        "Formalised Rights to Reality Advocacy Clinic into a replicable, youth-driven community model",
+        "Recruited and trained 5 student peer volunteers in informed consent, ethical interviewing, and casework",
+        "Conducted detailed baseline surveys across Anganwadi Centres in Mahipalpur (Inder & Israel Camps) and Noida",
       ],
     },
     {
       id: "p3",
+      number: "03",
       title: "November 2025",
+      headline: "Voices Unheard & Creative Advocacy",
+      summary:
+        "Launched Voices Unheard to bridge privileged spaces with grassroots narratives, transforming 100+ recorded community conversations into 10 slam poems performed at festivals.",
+      location: "Anganwadis & School Stages",
+      badge: "Creative Advocacy",
+      stat: "100+ Stories · 10 Poems",
       dot: "green" as const,
       items: [
-        "Weekly advocacy workshops and women-only circles",
-        "250+ women reached through clinics",
-        "Founded Voices Unheard creative wing",
-        "100+ stories collected with informed consent",
-        "10 stories adapted into slam poetry",
-        "Performed at school events",
-        "100+ women accessing schemes",
-        "30 families supported with education applications",
-        "Scale-up plans and funding proposals drafted",
+        "Established regular weekly advocacy clinics across Noida Sector 8 and Mahipalpur settlements",
+        "Founded Voices Unheard: collected 100+ life stories with consent and adapted 10 into spoken-word stanzas",
+        "Enrolled 100+ women into maternity and savings schemes (PMMVY, Sukanya Samriddhi) and facilitated 30 school admissions",
       ],
     },
     {
       id: "p4",
+      number: "04",
       title: "2026 Winner",
+      headline: "IB Global Youth Action Fund Winner & Scale",
+      summary:
+        "Selected as a Global Winner of the International Baccalaureate Youth Action Fund, receiving a USD 2,500 grant and recognition from the UP Ministry of Women's Welfare.",
+      location: "Global IB Community & UP Ministry",
+      badge: "Global Recognition",
+      stat: "$2,500 IB Grant Awarded",
       dot: "burgundy" as const,
       items: [
-        "Selected as a winner of the IB Global Youth Action Fund",
-        "Awarded USD 2,500 grant to scale and strengthen the Rights to Reality Advocacy Clinic",
-        "Recognised by the Uttar Pradesh Ministry of Women’s Welfare, Child Development and Nutrition",
-        "Sustained grassroots outreach: reached 2,000+ women and 800+ children",
-        "Expanded operations to Noida Sector 8 and Vasant Kunj Anganwadi Centres",
+        "Selected as Global Winner of the prestigious IB Global Youth Action Fund with a grant of ~USD 2,500",
+        "Work acknowledged and supported by the UP Ministry of Women's Welfare, Child Development and Nutrition",
+        "Expanded overall initiative footprint to over 2,000 women reached and 800+ children positively impacted",
       ],
     },
   ] as const,
@@ -631,25 +472,37 @@ export const timelineData = {
 
 export const contact = {
   involvement: [
-    { title: "Volunteer With Us", desc: "Join ethical storytelling and clinic support." },
-    { title: "Partner as an NGO/School", desc: "Host performances or co-design workshops." },
-    { title: "Share Your Story", desc: "We listen with dignity and consent." },
+    {
+      title: "Volunteer With Us",
+      desc: "Join our weekly Anganwadi clinics or assist with youth reading sessions.",
+      badge: "Grassroots",
+    },
+    {
+      title: "Partner Institution",
+      desc: "Host a slam poetry performance or co-host welfare education workshops.",
+      badge: "Collaboration",
+    },
+    {
+      title: "Share Your Story",
+      desc: "Confidential, dignity-first conversations for women and community members.",
+      badge: "Community",
+    },
   ] as const,
 } as const;
 
 export const achievements = {
   title: "Global Recognition & Grants",
   founderSnippet: "Srishti Aggarwal is a young changemaker who has demonstrated how youth-led action can create meaningful and measurable impact within underserved communities.",
-  body: "Through her initiative, Rights to Reality Advocacy Clinic, Srishti has worked extensively with women and children across Anganwadi Centres in Noida (Sector 8), as well as multiple Anganwadi Centres in Vasant Kunj, Inder Camp, and Israel Camp in the Mahipalpur area. In collaboration with Hamari Pahchan NGO, she has conducted awareness sessions to help families understand and access government welfare schemes, educational support, healthcare benefits, legal assistance, and various social protection programmes.",
+  body: "Through her initiative, Rights to Reality Advocacy Clinic, Srishti has worked extensively with women and children across Anganwadi Centres in Noida (Sector 8), as well as multiple Anganwadi Centres in Vasant Kunj, Inder Camp, and Israel Camp in the Mahipalpur area. In collaboration with Hamari Pehchaan NGO, she has conducted awareness sessions to help families understand and access government welfare schemes, educational support, healthcare benefits, legal assistance, and various social protection programmes.",
   recognition: "The impact and innovation of the project have been recognised internationally. Srishti was selected as a winner of the International Baccalaureate (IB) Global Youth Action Fund, receiving a grant of approximately USD 2,500 to further develop and expand the Rights to Reality Advocacy Clinic. The funding has supported the project's continued grassroots outreach, community awareness initiatives, and efforts to create sustainable social impact.",
-  ministryRecognition: "In addition to this international recognition, her work has also been acknowledged by the Uttar Pradesh Ministry of Women’s Welfare, Child Development and Nutrition and is being implemented in partnership with Hamari Pahchan NGO, strengthening the initiative's reach and effectiveness.",
+  ministryRecognition: "In addition to this international recognition, her work has also been acknowledged by the Uttar Pradesh Ministry of Women’s Welfare, Child Development and Nutrition and is being implemented in partnership with Hamari Pehchaan NGO, strengthening the initiative's reach and effectiveness.",
   impactDetails: "To date, the initiative has reached over 2,000 women and positively impacted more than 800 children by improving awareness of welfare schemes, education opportunities, healthcare support, and social protection programmes. Through regular field visits and community engagement, the project continues to empower underserved families with the knowledge and confidence to access government benefits designed for their well-being.",
   empathyClosing: "Beyond measurable outcomes, Rights to Reality Advocacy Clinic is rooted in empathy, advocacy, and meaningful community partnerships. Through continuous engagement with women at the grassroots, Srishti has gained valuable insights into the challenges faced by underserved communities while reinforcing her belief that informed, compassionate young leaders can become powerful catalysts for lasting social transformation.",
   ibLink: "https://ibo.org/festival-of-hope/youth-in-action/rights-to-reality-advocacy-clinic--voices-unheard?contentId=207578",
   highlights: [
     { text: "Winner – International Baccalaureate (IB) Global Youth Action Fund", emoji: "🏆" },
     { text: "Awarded a grant of approximately USD 2,500 to scale and strengthen the Rights to Reality Advocacy Clinic", emoji: "💰" },
-    { text: "Implemented in partnership with Hamari Pahchan NGO through sustained grassroots engagement", emoji: "🤝" },
+    { text: "Implemented in partnership with Hamari Pehchaan NGO through sustained grassroots engagement", emoji: "🤝" },
     { text: "Recognised by the Uttar Pradesh Ministry of Women’s Welfare, Child Development and Nutrition for community-focused impact", emoji: "🏅" },
     { text: "Reached over 2,000 women through awareness sessions on government welfare schemes and social protection programmes", emoji: "👩" },
     { text: "Positively impacted more than 800 children by promoting access to educational support and child welfare initiatives", emoji: "📚" },
@@ -657,6 +510,6 @@ export const achievements = {
     { text: "Demonstrating the power of youth-led leadership in creating sustainable, community-driven social change", emoji: "🌱" }
   ] as const,
   featuredBy: "Featured by The British School for her outstanding achievement in securing the International Baccalaureate (IB) Global Youth Action Fund grant of approximately USD 2,500, recognising the impact and innovation of the Rights to Reality Advocacy Clinic.",
-  schoolImage: "/achivements/img-1.jpeg"
+  schoolImage: "/images/ib_winner_official_poster.jpeg"
 } as const;
 

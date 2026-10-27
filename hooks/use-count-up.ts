@@ -11,12 +11,12 @@ export function useCountUp(
 
   useEffect(() => {
     if (!enabled) return;
+    let frame = 0;
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(target);
-      return;
+      frame = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(frame);
     }
     let start: number | null = null;
-    let frame = 0;
 
     const tick = (now: number) => {
       if (start === null) start = now;

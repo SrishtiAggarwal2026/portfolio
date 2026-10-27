@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { PublicGalleryImage } from "@/lib/public-gallery-image";
 import { PlaceholderImage } from "@/components/placeholder-image";
+import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
 
 type StoryBlockPhotoProps = {
   image: PublicGalleryImage | undefined;
@@ -24,20 +25,20 @@ export function StoryBlockPhoto({
   }
 
   return (
-    <figure className="space-y-2">
+    <figure className="group space-y-2">
       <div
-        className={`relative overflow-hidden rounded-2xl bg-muted ring-1 ring-border ${aspectClassName}`}
+        className={`relative overflow-hidden rounded-2xl bg-muted ring-1 ring-[var(--color-gold)]/30 shadow-md ${aspectClassName}`}
       >
         <Image
           src={image.src}
           alt={alt}
           fill
-          className="object-cover"
+          placeholder="blur"
+          blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 96vw, min(480px, 45vw)"
           quality={image.unoptimized ? undefined : 75}
           unoptimized={image.unoptimized}
-          loading="lazy"
-          placeholder="empty"
         />
       </div>
       <figcaption className="text-center text-xs text-muted-foreground">{label}</figcaption>

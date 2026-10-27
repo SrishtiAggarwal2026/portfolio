@@ -1,34 +1,48 @@
-import { readdirSync } from "fs";
-import { join } from "path";
+import galleryManifest from "@/data/gallery-manifest.json";
 import type { PublicGalleryImage } from "@/lib/public-gallery-image";
 
-const IMAGE_FILE_RE = /\.(jpe?g|png|webp|gif)$/i;
+type ManifestItem =
+  | string
+  | {
+      relPath?: string;
+      filename: string;
+      src?: string;
+      category?: string;
+    };
 
-function encodePathSegment(name: string): string {
-  return name
-    .split("/")
-    .map((part) => encodeURIComponent(part))
-    .join("/");
-}
-
-/** All photo files in `public/images` (sorted). Returns [] if the folder is missing. */
+/** All photo files in `public/` (sorted and indexed across all subfolders). */
 export function getPublicGalleryImages(): PublicGalleryImage[] {
-  const dir = join(process.cwd(), "public", "images");
-  let files: string[];
-  try {
-    files = readdirSync(dir);
-  } catch {
-    return [];
-  }
+  const items = galleryManifest as ManifestItem[];
+  return items.map((item) => {
+    if (typeof item === "string") {
+      const clean = item.replace(/^\//, "");
+      const relPath = clean.includes("/") ? clean : `images/${clean}`;
+      const filename = relPath.split("/").pop() || relPath;
+      const src = "/" + relPath.split("/").map((p) => encodeURIComponent(p)).join("/");
+      return {
+        filename,
+        src,
+        unoptimized: false,
+        category: "Advocacy & Community",
+        relPath,
+      };
+    }
 
-  return files
-    .filter((f) => IMAGE_FILE_RE.test(f))
-    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base", numeric: true }))
-    .map((filename) => ({
+    const filename = item.filename;
+    const src =
+      item.src ||
+      (item.relPath
+        ? "/" + item.relPath.split("/").map((p) => encodeURIComponent(p)).join("/")
+        : `/images/${encodeURIComponent(filename)}`);
+
+    return {
       filename,
-      src: `/images/${encodePathSegment(filename)}`,
+      src,
       unoptimized: false,
-    }));
+      category: item.category || "Advocacy & Community",
+      relPath: item.relPath,
+    };
+  });
 }
 
 /** Prefer a JPEG hero for broad browser support; fall back to first file. */

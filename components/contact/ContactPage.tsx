@@ -1,292 +1,358 @@
 "use client";
 
-import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, ArrowDown, Send, HeartHandshake, School, Sparkles } from "lucide-react";
-import { MovingBorder } from "@/components/aceternity/moving-border";
+import { motion } from "framer-motion";
+import { ArrowUpRight, Building, GraduationCap, HeartHandshake, Mail, Send, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { TextReveal } from "@/components/motion/text-reveal";
 import { contact, siteMeta } from "@/data/site";
 import { getFormSubmitActionUrl, getFormSubmitThankYouUrl } from "@/lib/form-submit";
 import { cn } from "@/lib/utils";
 
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+    </svg>
+  );
+}
+
 const involvementOptions = [
-  "Volunteer",
-  "Partner (NGO / school)",
-  "Share a story",
-  "Media / general inquiry",
+  "Volunteer at Community Clinics",
+  "Partner School or NGO",
+  "Host a Slam Poetry Performance",
+  "Share a Story (Confidential)",
+  "General Inquiry",
 ];
 
-const tabToOptionMap: Record<string, string> = {
-  "Volunteer With Us": "Volunteer",
-  "Partner as an NGO/School": "Partner (NGO / school)",
-  "Share Your Story": "Share a story",
-};
-
-const tabIcons: Record<string, React.ElementType> = {
-  "Volunteer With Us": HeartHandshake,
-  "Partner as an NGO/School": School,
-  "Share Your Story": Sparkles,
-};
+const involvementIcons = [Users, GraduationCap, HeartHandshake];
 
 export default function ContactPage() {
   const searchParams = useSearchParams();
   const sent = searchParams.get("sent") === "1";
-  const [selectedInvolvement, setSelectedInvolvement] = useState<string>("Volunteer");
   const formAction = getFormSubmitActionUrl();
   const thankYouUrl = getFormSubmitThankYouUrl();
 
-  const handleTabClick = (title: string) => {
-    const mapped = tabToOptionMap[title] ?? "Volunteer";
-    setSelectedInvolvement(mapped);
-    const formSection = document.getElementById("contact-form");
-    if (formSection) {
-      formSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <div className="flex min-w-0 flex-col">
-      <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-        <h1 className="text-balance font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)] sm:text-4xl md:text-5xl">
-          Get Involved
-        </h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-          Whether you want to volunteer, host a performance, or share a story — select a pathway below to start.
-        </p>
-
-        {/* 3 Clickable Involvement Tabs */}
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {contact.involvement.map((item) => {
-            const mappedVal = tabToOptionMap[item.title] ?? "Volunteer";
-            const isSelected = selectedInvolvement === mappedVal;
-            const Icon = tabIcons[item.title] ?? HeartHandshake;
-
-            return (
-              <button
-                key={item.title}
-                type="button"
-                onClick={() => handleTabClick(item.title)}
-                className={cn(
-                  "group relative flex flex-col justify-between rounded-2xl border p-6 text-left transition-all duration-300 cursor-pointer",
-                  isSelected
-                    ? "border-[var(--color-burgundy)] bg-[var(--color-cream)]/90 shadow-md ring-2 ring-[var(--color-burgundy)]/25 -translate-y-1"
-                    : "border-border bg-card/90 shadow-xs hover:-translate-y-1 hover:border-[var(--color-gold)]/50 hover:shadow-md"
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-3">
-                    <div
-                      className={cn(
-                        "flex size-10 items-center justify-center rounded-xl transition-colors",
-                        isSelected
-                          ? "bg-[var(--color-burgundy)] text-white shadow-xs"
-                          : "bg-muted text-muted-foreground group-hover:bg-[var(--color-burgundy)]/10 group-hover:text-[var(--color-burgundy)]"
-                      )}
-                    >
-                      <Icon className="size-5" />
-                    </div>
-                    {isSelected ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-burgundy)] px-2.5 py-0.5 text-[11px] font-semibold text-white">
-                        <CheckCircle2 className="size-3" /> Selected
-                      </span>
-                    ) : (
-                      <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">
-                        Click to select ↓
-                      </span>
-                    )}
-                  </div>
-                  <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-xl font-semibold text-foreground">
-                    {item.title}
-                  </h2>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                </div>
-
-                <div className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
-                  <span>Fill details below</span>
-                  <ArrowDown className="size-3.5 transition-transform group-hover:translate-y-0.5" />
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Contact Form Section */}
-      <section id="contact-form" className="scroll-mt-24 border-y border-border bg-secondary/25 py-16 md:py-24">
-        <div className="mx-auto max-w-xl px-4 sm:px-6">
-          <div className="text-center sm:text-left">
-            <h2 className="font-[family-name:var(--font-playfair)] text-2xl sm:text-3xl font-semibold text-[var(--color-burgundy)]">
-              Send a Message
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Direct inbox for Srishti Aggarwal · Rights to Reality &amp; Voices Unheard
-            </p>
+      {/* Hero Overview */}
+      <section className="relative overflow-hidden bg-[var(--color-paper)] pt-24 pb-16 sm:pt-32 sm:pb-20 md:pt-36 md:pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-[1] mx-auto min-w-0 max-w-6xl px-4 sm:px-6"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/70 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-burgundy)] shadow-xs">
+            Connect · Collaborate · Amplify
           </div>
+          <h1 className="mt-4 text-balance text-3xl font-extrabold tracking-tight text-[var(--color-burgundy)] sm:text-4xl md:text-5xl">
+            <TextReveal text="Get Involved" delay={0.15} />
+          </h1>
+          <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
+            Join on-ground clinics, host a slam poetry assembly, or partner as an institution.
+          </p>
 
-          {sent ? (
-            <div
-              className="mt-8 rounded-2xl border border-[var(--color-burgundy)]/30 bg-[var(--color-cream)]/70 p-6 text-center shadow-xs"
-              role="status"
-            >
-              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-[var(--color-burgundy)] text-white">
-                <CheckCircle2 className="size-6" />
-              </div>
-              <h3 className="mt-3 font-[family-name:var(--font-playfair)] text-xl font-bold text-[var(--color-burgundy)]">
-                Thank You!
-              </h3>
-              <p className="mt-1.5 text-sm text-foreground/90">
-                Your message has been sent successfully. We will get back to you shortly.
+          {/* 3 Quick Action Cards */}
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {contact.involvement.map((item, i) => {
+              const Icon = involvementIcons[i] ?? HeartHandshake;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
+                  whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                  className="glass-panel rounded-2xl border border-[var(--color-gold)]/35 bg-card/90 p-6 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)] transition-transform duration-300 group-hover:scale-110">
+                        <Icon className="size-5" />
+                      </div>
+                      <span className="rounded-full bg-[var(--color-cream)] border border-[var(--color-gold)]/30 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-foreground">
+                        {item.badge}
+                      </span>
+                    </div>
+                    <h2 className="mt-4 text-lg font-bold tracking-tight text-foreground">
+                      {item.title}
+                    </h2>
+                    <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Contact Form */}
+      <section className="border-y border-[var(--color-gold)]/25 bg-secondary/25 py-16 md:py-24">
+        <div className="mx-auto max-w-2xl px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="glass-panel rounded-3xl p-8 sm:p-10 border-[var(--color-gold)]/40 shadow-xl relative overflow-hidden"
+          >
+            <div className="text-center mb-8 relative z-[1]">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)] px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                <Mail className="size-3.5" /> Direct Contact
+              </span>
+              <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-burgundy)]">
+                Send a Message
+              </h2>
+              <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+                We respond to inquiries within 24–48 hours.
               </p>
             </div>
-          ) : null}
 
-          <form
-            action={formAction}
-            method="POST"
-            className="mt-8 space-y-6 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs"
-          >
-            {/* FormSubmit Configurations */}
-            <input type="hidden" name="_subject" value={`New Get Involved Inquiry — ${siteMeta.title}`} />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input
-              type="hidden"
-              name="_autoresponse"
-              value="Thank you for reaching out to Srishti Aggarwal (Rights to Reality & Voices Unheard). We have received your inquiry and will be in touch soon."
-            />
-            {thankYouUrl ? <input type="hidden" name="_next" value={thankYouUrl} /> : null}
-            <input
-              type="text"
-              name="_honey"
-              tabIndex={-1}
-              autoComplete="off"
-              className="hidden"
-              aria-hidden
-            />
+            {sent ? (
+              <p
+                className="mb-8 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-center text-sm font-semibold text-emerald-800 dark:text-emerald-300"
+                role="status"
+              >
+                ✨ Thank you! Your message was sent successfully. We will be in touch shortly.
+              </p>
+            ) : null}
 
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
-              <Input
-                id="name"
-                name="name"
-                required
-                autoComplete="name"
-                placeholder="Your full name"
+            <form
+              action={formAction ?? undefined}
+              method="POST"
+              className="space-y-5 relative z-[1]"
+            >
+              <input type="hidden" name="_subject" value={`Get involved — ${siteMeta.title}`} />
+              {thankYouUrl ? <input type="hidden" name="_next" value={thankYouUrl} /> : null}
+              <input type="hidden" name="_template" value="table" />
+              <input
+                type="text"
+                name="_honey"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden
               />
-            </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                    Name
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    required
+                    autoComplete="name"
+                    placeholder="Your name"
+                    disabled={!formAction}
+                    className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    placeholder="your.email@example.org"
+                    disabled={!formAction}
+                    className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="org" className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                  Organisation (optional)
+                </Label>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
+                  id="org"
+                  name="org"
+                  placeholder="School, NGO, or institution"
+                  disabled={!formAction}
+                  className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="involve" className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                  Area of Interest
+                </Label>
+                <select
+                  id="involve"
+                  name="involve"
                   required
-                  autoComplete="email"
-                  placeholder="your.email@domain.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number (optional)</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  placeholder="+91 98765 43210"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="org">Organisation / School (optional)</Label>
-              <Input
-                id="org"
-                name="org"
-                placeholder="School, NGO, university, or company"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="involve">How you&apos;d like to get involved *</Label>
-              <select
-                id="involve"
-                name="involve"
-                required
-                value={selectedInvolvement}
-                onChange={(e) => setSelectedInvolvement(e.target.value)}
-                className={cn(
-                  "flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none cursor-pointer",
-                  "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50"
-                )}
-              >
-                {involvementOptions.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
+                  defaultValue=""
+                  disabled={!formAction}
+                  className={cn(
+                    "flex h-10 w-full rounded-md border border-[var(--color-gold)]/30 bg-background/80 px-3 py-2 text-sm shadow-xs outline-none",
+                    "focus-visible:border-[var(--color-burgundy)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40",
+                    !formAction && "cursor-not-allowed opacity-60"
+                  )}
+                >
+                  <option value="" disabled>
+                    Select an option
                   </option>
-                ))}
-              </select>
-            </div>
+                  {involvementOptions.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Your Message *</Label>
-              <Textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                placeholder="Tell us more about how you'd like to collaborate or get involved…"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                  Message
+                </Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  placeholder="Tell us about your ideas, collaboration interests, or questions…"
+                  disabled={!formAction}
+                  className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                />
+              </div>
 
-            <div className="pt-2">
-              <button
-                type="submit"
-                className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[var(--color-burgundy)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[var(--color-burgundy)]/90 hover:shadow-md cursor-pointer"
-              >
-                <Send className="size-4 transition-transform group-hover:translate-x-0.5" />
-                <span>Send Message</span>
-              </button>
-            </div>
-          </form>
+              <div className="pt-2">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="submit"
+                  disabled={!formAction}
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-burgundy)] px-7 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[var(--color-burgundy)]/90 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Send Message <Send className="size-4" />
+                </motion.button>
+              </div>
+            </form>
+          </motion.div>
         </div>
       </section>
 
-      {/* Institutional Partnerships */}
+      {/* In Official Partnership */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
-        <h2 className="text-center font-[family-name:var(--font-playfair)] text-2xl sm:text-3xl font-semibold text-[var(--color-burgundy)]">
-          Key Partnerships
-        </h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
-          <Card className="border-border shadow-xs hover:border-[var(--color-gold)]/40 hover:shadow-md transition-all">
-            <CardContent className="space-y-4 p-6">
-              <div className="flex min-h-[120px] items-center justify-center rounded-2xl border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/40 px-6 py-8">
-                <p className="text-balance text-center font-[family-name:var(--font-playfair)] text-lg font-semibold leading-snug text-foreground sm:text-xl">
-                  {siteMeta.partnerNgo}
-                </p>
-              </div>
-              <p className="text-center text-sm text-muted-foreground">
-                On-ground partner for grassroots welfare access, Anganwadi outreach, and community trust.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-border shadow-xs hover:border-[var(--color-gold)]/40 hover:shadow-md transition-all">
-            <CardContent className="space-y-4 p-6">
-              <div className="flex min-h-[120px] items-center justify-center rounded-2xl border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/40 px-6 py-8">
-                <p className="text-balance text-center font-[family-name:var(--font-playfair)] text-lg font-semibold leading-snug text-foreground sm:text-xl">
-                  {siteMeta.school}
-                </p>
-              </div>
-              <p className="text-center text-sm text-muted-foreground">
-                Institutional home for student leadership, IB Global Grant nomination, and public performances.
-              </p>
-            </CardContent>
-          </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center max-w-2xl mx-auto mb-10"
+        >
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)] px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+            Collaborative Network
+          </span>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--color-burgundy)] md:text-4xl">
+            In Official Partnership
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          >
+            <Card className="glass-panel border-[var(--color-gold)]/30 shadow-xs hover:shadow-xl transition-all overflow-hidden p-6 sm:p-8 h-full">
+              <CardContent className="space-y-4 p-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)]">
+                    <Building className="size-5" />
+                  </div>
+                  <span className="rounded-full bg-[var(--color-cream)] border border-[var(--color-gold)]/30 px-3 py-0.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                    Grassroots Field Partner
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight text-[var(--color-burgundy)]">
+                    {siteMeta.partnerNgo}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    On-ground collaboration for Anganwadi clinics across Noida &amp; Mahipalpur, welfare enrollment, and community storytelling circles.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+          >
+            <Card className="glass-panel border-[var(--color-gold)]/30 shadow-xs hover:shadow-xl transition-all overflow-hidden p-6 sm:p-8 h-full">
+              <CardContent className="space-y-4 p-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-[var(--color-gold)]/15 text-[var(--color-gold)]">
+                    <GraduationCap className="size-5" />
+                  </div>
+                  <span className="rounded-full bg-[var(--color-cream)] border border-[var(--color-gold)]/30 px-3 py-0.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                    Institutional Home
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold tracking-tight text-[var(--color-burgundy)]">
+                    {siteMeta.school}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    Supporting youth advocacy leadership, volunteer mentorship, literary assemblies, and the IB Global Youth Action Fund development.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
+
+        {/* Direct LinkedIn Channel Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8"
+        >
+          <Card className="glass-panel border-[var(--color-gold)]/40 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--color-cream)]/50 via-card to-[var(--color-cream)]/30 shadow-md">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+              <div className="flex items-center gap-4">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#0077b5]/15 text-[#0077b5] border border-[#0077b5]/30 shadow-xs">
+                  <LinkedInIcon className="size-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold tracking-tight text-foreground">
+                    Connect Directly on LinkedIn
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                    Reach out to Srishti Aggarwal for speaker invitations, literary assembly features, and youth advocacy partnerships.
+                  </p>
+                </div>
+              </div>
+              <a
+                href={siteMeta.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0077b5] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md hover:brightness-110 transition-all shrink-0 hover:scale-105"
+              >
+                <span>View LinkedIn Profile</span>
+                <ArrowUpRight className="size-4" />
+              </a>
+            </div>
+          </Card>
+        </motion.div>
       </section>
     </div>
   );

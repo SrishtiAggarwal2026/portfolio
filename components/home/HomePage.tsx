@@ -1,366 +1,747 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, BookOpen, Building2, ExternalLink, GraduationCap, Heart, Mic2, ShieldCheck } from "lucide-react";
-import Image from "next/image";
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  Calendar,
+  ExternalLink,
+  GraduationCap,
+  Megaphone,
+  Mic2,
+  Quote,
+  Scale,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
-import { useRef } from "react";
-import { BackgroundBeams } from "@/components/aceternity/background-beams";
-import { FlipWords } from "@/components/aceternity/flip-words";
+import { useMemo, useRef } from "react";
+import Image from "next/image";
+import { CardSpotlight } from "@/components/aceternity/card-spotlight";
+import {
+  DraggableCardStack,
+  type DraggableCardItem,
+} from "@/components/aceternity/draggable-cards";
 import { InfiniteMovingCards } from "@/components/aceternity/infinite-moving-cards";
-import { LampContainer } from "@/components/aceternity/lamp-container";
-import { MovingBorder } from "@/components/aceternity/moving-border";
-import { SparklesCore } from "@/components/aceternity/sparkles-core";
-import { TracingBeam } from "@/components/aceternity/tracing-beam";
-import { WobbleCard } from "@/components/aceternity/wobble-card";
-import { buttonVariants } from "@/components/ui/button";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Sparkles } from "@/components/motion/sparkles";
+import { TextReveal } from "@/components/motion/text-reveal";
+import { TiltCard } from "@/components/motion/tilt-card";
 import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
-import { home, achievements } from "@/data/site";
+import { achievements, home } from "@/data/site";
 import { useCountUp } from "@/hooks/use-count-up";
 import type { PublicGalleryImage } from "@/lib/public-gallery-image";
 import { cn } from "@/lib/utils";
 
-const statListVariants = {
-  hidden: {},
+const heroContainerVariants = {
+  hidden: { opacity: 0 },
   show: {
-    transition: { staggerChildren: 0.09, delayChildren: 0.05 },
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
   },
 };
 
-const statItemVariants = {
+const heroItemVariants = {
   hidden: { opacity: 0, y: 16 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
-function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+const statContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const statItemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+type StatCardProps = {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  label: string;
+  sublabel: string;
+  tag: string;
+  icon: React.ComponentType<{ className?: string }>;
+  accent?: "burgundy" | "gold";
+};
+
+function ImpactStatCard({
+  value,
+  suffix = "",
+  prefix = "",
+  label,
+  sublabel,
+  tag,
+  icon: Icon,
+  accent = "burgundy",
+}: StatCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10%" });
   const n = useCountUp(value, { enabled: inView });
+
   return (
-    <motion.div variants={statItemVariants}>
-      <WobbleCard>
-        <div ref={ref} className="text-center">
-        <p className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-[var(--color-burgundy)] md:text-4xl">
-          {n}
-          {suffix}
+    <motion.div
+      variants={statItemVariants}
+      className="h-full"
+    >
+      <CardSpotlight
+        className={cn(
+          "h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-[var(--color-paper)] border border-[var(--color-gold)]/30 shadow-xs hover:shadow-xl transition-all",
+          accent === "burgundy"
+            ? "border-t-4 border-t-[var(--color-burgundy)]"
+            : "border-t-4 border-t-[var(--color-gold)]"
+        )}
+      >
+        <div>
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div
+              className={cn(
+                "size-10 rounded-xl flex items-center justify-center border shadow-2xs transition-transform duration-300 group-hover:scale-110",
+                accent === "burgundy"
+                  ? "bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)] border-[var(--color-burgundy)]/25"
+                  : "bg-[var(--color-gold)]/15 text-[var(--color-gold)] border-[var(--color-gold)]/35"
+              )}
+            >
+              <Icon className="size-4.5" />
+            </div>
+            <span className="inline-flex items-center rounded-full border border-[var(--color-gold)]/35 bg-[var(--color-cream)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--color-burgundy)]">
+              {tag}
+            </span>
+          </div>
+
+          <div ref={ref}>
+            <p className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--color-burgundy)] tabular-nums leading-none">
+              {prefix}
+              {n}
+              <span className="text-[var(--color-gold)]">{suffix}</span>
+            </p>
+            <h3 className="mt-2 text-base font-bold text-foreground tracking-tight">
+              {label}
+            </h3>
+          </div>
+        </div>
+
+        <p className="mt-3 pt-2.5 border-t border-[var(--color-gold)]/20 text-xs font-semibold text-foreground/85 leading-normal">
+          {sublabel}
         </p>
-        <p className="mt-2 text-sm font-medium text-muted-foreground">{label}</p>
-      </div>
-    </WobbleCard>
+      </CardSpotlight>
     </motion.div>
   );
 }
 
 type HomePageProps = {
   heroImage?: PublicGalleryImage | null;
+  galleryImages?: PublicGalleryImage[];
 };
 
-export function HomePage({ heroImage }: HomePageProps) {
+export function HomePage({ }: HomePageProps = {}) {
+  const heroCards: DraggableCardItem[] = useMemo(() => {
+    // Number-wise images 1 to 6 from public/hero/
+    return [
+      {
+        id: "hero-card-1",
+        image: "/hero/1.jpeg",
+        tag: "IB Global Grantee",
+        title: "Rights to Reality — Srishti Aggarwal",
+        desc: "On-ground advocacy sessions facilitating legal literacy and welfare scheme access.",
+        badge: "Founder & Youth Advocate",
+        location: "Mahipalpur, New Delhi",
+      },
+      {
+        id: "hero-card-2",
+        image: "/hero/2.jpeg",
+        tag: "Field Clinic",
+        title: "Legal Literacy & Women's Rights",
+        desc: "Explaining labor protections and welfare schemes in accessible plain language.",
+        badge: "2,000+ Women Reached",
+        location: "Sector 8, Noida",
+      },
+      {
+        id: "hero-card-3",
+        image: "/hero/3.jpeg",
+        tag: "Literacy Initiative",
+        title: "Shakurpur Community Reading Room",
+        desc: "Partnering with SEWA Bharti & Kitaab4U with 1,000+ donated books.",
+        badge: "800+ Children Impacted",
+        location: "Shakurpur Hub",
+      },
+      {
+        id: "hero-card-4",
+        image: "/hero/4.jpeg",
+        tag: "Spoken-Word Advocacy",
+        title: "Voices Unheard Slam Poetry",
+        desc: "Adapting firsthand community narratives into slam poetry for public stages.",
+        badge: "10 Original Stanzas",
+        location: "School & Festival Stages",
+      },
+      {
+        id: "hero-card-5",
+        image: "/hero/5.jpeg",
+        tag: "Direct Support",
+        title: "Door-to-Door Scheme Enrollment",
+        desc: "Hands-on assistance for PMMVY, Sukanya Samriddhi Yojana, and civic entitlements.",
+        badge: "Consent-First",
+        location: "Delhi Slum Clusters",
+      },
+      {
+        id: "hero-card-6",
+        image: "/hero/6.jpeg",
+        tag: "Global Recognition",
+        title: "International Baccalaureate Showcase",
+        desc: "Awarded a USD 2,500 grant through the IB Festival of Hope.",
+        badge: "USD $2,500 Grant",
+        location: "Festival of Hope",
+      },
+    ];
+  }, []);
+
   return (
-    <div className="flex min-w-0 flex-col">
-      <section className="relative overflow-hidden bg-[var(--color-paper)] py-16 sm:py-20 md:py-28">
-        <BackgroundBeams />
-        <SparklesCore className="opacity-80" />
-        <div className="relative z-[1] mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16">
-          <div className="min-w-0">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-burgundy)] sm:text-sm sm:tracking-[0.2em]">
-              Rights to Reality Advocacy Clinic
-            </p>
-            <h1 className="mt-4 max-w-4xl text-balance font-[family-name:var(--font-playfair)] text-3xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl lg:leading-[1.08]">
-              Every Woman Deserves to Be <FlipWords words={home.flipWords} />
-            </h1>
-            <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {home.heroSub}
-            </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Link href="/initiative">
-                <MovingBorder containerClassName="rounded-xl">
-                  <span className="flex items-center gap-2 px-2 py-1 text-sm font-semibold">
-                    Explore the Initiative <ArrowRight className="size-4" />
-                  </span>
-                </MovingBorder>
-              </Link>
-              <Link
-                href="/impact"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "lg" }),
-                  "text-[var(--color-burgundy)]"
-                )}
-              >
-                Our Impact
-              </Link>
-            </div>
-          </div>
+    <div className="flex min-w-0 flex-col bg-[var(--color-paper)]">
+      {/* 1. HERO SECTION: Smooth staggered entrance with Radiant Shine */}
+      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 lg:pt-44 lg:pb-24 overflow-hidden">
+        {/* Radiant Ambient Background Shine */}
+        <div className="pointer-events-none absolute inset-x-0 -top-32 -z-10 flex justify-center overflow-hidden">
+          <div className="h-[480px] w-[920px] max-w-full rounded-full bg-gradient-to-b from-[var(--color-gold)]/22 via-[var(--color-cream)]/35 to-transparent blur-3xl opacity-80 animate-pulse-subtle" />
+        </div>
+        <div className="glow-ambient-gold -top-24 -left-20 size-[380px] sm:size-[480px] opacity-60" />
+        <div className="glow-ambient-gold top-1/4 -right-20 size-[360px] sm:size-[440px] opacity-55" />
+        <Sparkles count={26} seed={11} />
+
+        <div className="relative z-[1] mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-14">
           <motion.div
-            initial={{ opacity: 0, rotate: -2 }}
-            whileInView={{ opacity: 1, rotate: -1 }}
-            viewport={{ once: true }}
-            className="relative aspect-[4/3] w-full min-w-0 max-w-lg justify-self-stretch sm:justify-self-end lg:max-w-none"
+            variants={heroContainerVariants}
+            initial="hidden"
+            animate="show"
+            className="min-w-0 lg:col-span-6 xl:col-span-6"
           >
-            <div className="absolute inset-0 rotate-2 rounded-3xl bg-[var(--color-burgundy)]/15" aria-hidden />
-            <div className="absolute inset-0 overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
-              <Image
-                src={heroImage?.src ?? "/placeholder.svg"}
-                alt={
-                  heroImage
-                    ? `Community advocacy — ${heroImage.filename.replace(/\.[^.]+$/, "")}`
-                    : "Voices Unheard — community advocacy"
-                }
-                fill
-                sizes="(max-width: 1024px) 96vw, min(640px, 50vw)"
-                quality={heroImage?.unoptimized ? undefined : 75}
-                placeholder={heroImage ? "empty" : "blur"}
-                blurDataURL={heroImage ? undefined : PLACEHOLDER_BLUR_DATA_URL}
-                className="object-cover"
-                priority
-                unoptimized={heroImage?.unoptimized ?? false}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-burgundy)]/40 to-transparent" />
-              <p className="absolute bottom-3 left-3 right-3 text-xs font-medium text-white drop-shadow sm:bottom-4 sm:left-4 sm:right-4 sm:text-sm">
-                {heroImage ? "From the field" : "Voices Unheard in the community"}
-              </p>
-            </div>
+            {/* Floating badge with Radiant Shimmer */}
+            <motion.div
+              variants={heroItemVariants}
+              animate={{ y: [0, -3, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              className="shine-badge inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/55 bg-[var(--color-cream)]/90 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-burgundy)]"
+            >
+              <span className="size-1.5 rounded-full bg-[var(--color-gold)] animate-ping" />
+              Winner · IB Global Youth Action Fund
+            </motion.div>
+
+            <motion.h1
+              variants={heroItemVariants}
+              className="mt-4 text-balance text-3xl font-extrabold leading-[1.12] tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-[52px] lg:leading-[1.1]"
+            >
+              <TextReveal text="Rights on the ground." delay={0.25} />{" "}
+              <br className="hidden sm:inline" />
+              <motion.span
+                initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="text-shimmer-gold inline-block"
+              >
+                Voices on the stage.
+              </motion.span>
+            </motion.h1>
+
+            <motion.p
+              variants={heroItemVariants}
+              className="mt-5 max-w-xl text-pretty text-base leading-relaxed font-semibold text-foreground/90 sm:text-lg"
+            >
+              A youth-led clinic securing government welfare entitlements for women in Delhi NCR — and sharing their lived realities through spoken-word poetry.
+            </motion.p>
+
+            <motion.div variants={heroItemVariants} className="mt-7 flex flex-wrap items-center gap-3">
+              <Magnetic>
+                <Link
+                  href="/initiative"
+                  className="shine-button group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-burgundy)] px-6 py-3 text-sm font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Explore The Work <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Magnetic>
+              <Magnetic>
+                <Link
+                  href="/about"
+                  className="shine-card inline-flex items-center justify-center rounded-full border border-[var(--color-burgundy)]/35 bg-white/70 px-6 py-3 text-sm font-semibold text-[var(--color-burgundy)] hover:bg-[var(--color-cream)]/85 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Meet Srishti
+                </Link>
+              </Magnetic>
+            </motion.div>
+
+            {/* Quick Partner Trust Badges */}
+            <motion.div
+              variants={heroItemVariants}
+              className="mt-9 pt-6 border-t border-[var(--color-gold)]/25 flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs text-muted-foreground"
+            >
+              <span className="font-semibold text-foreground mr-1">In partnership with:</span>
+              <span className="rounded-md bg-white/80 border border-[var(--color-gold)]/35 px-2.5 py-1 font-semibold text-foreground hover:border-[var(--color-gold)] shadow-[0_2px_8px_rgba(201,168,76,0.12)] transition-colors">
+                Hamari Pahchan NGO
+              </span>
+              <span className="rounded-md bg-white/80 border border-[var(--color-gold)]/35 px-2.5 py-1 font-semibold text-foreground hover:border-[var(--color-gold)] shadow-[0_2px_8px_rgba(201,168,76,0.12)] transition-colors">
+                The British School
+              </span>
+              <span className="rounded-md bg-white/80 border border-[var(--color-gold)]/35 px-2.5 py-1 font-semibold text-foreground hover:border-[var(--color-gold)] shadow-[0_2px_8px_rgba(201,168,76,0.12)] transition-colors">
+                SEWA Bharti &amp; Kitaab4U
+              </span>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative lg:col-span-6 xl:col-span-6 flex justify-center lg:justify-end"
+          >
+            {/* Luminous Glow Halo behind card deck */}
+            <div className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-gradient-to-tr from-[var(--color-gold)]/25 via-[var(--color-gold-glow)]/20 to-[var(--color-burgundy)]/10 blur-3xl opacity-75 animate-pulse-subtle" />
+            <DraggableCardStack items={heroCards} autoDragIntervalMs={3000} />
           </motion.div>
         </div>
       </section>
 
-      <section className="border-y border-[var(--color-gold)]/30 bg-[var(--color-cream)]/60 py-16">
-        <motion.div
-          className="mx-auto grid max-w-6xl gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4"
-          variants={statListVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-8%" }}
-        >
-          {home.stats.map((s) => (
-            <Stat key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
-          ))}
-        </motion.div>
+      {/* 2. STATS AT A GLANCE: Pure numbers with Ambient Warmth */}
+      <section className="relative border-y border-[var(--color-gold)]/30 bg-gradient-to-b from-[var(--color-cream)]/50 via-[var(--color-cream)]/25 to-[var(--color-cream)]/50 py-12 sm:py-16 overflow-hidden">
+        <div className="glow-ambient-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] opacity-35" />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <motion.div
+            variants={statContainerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-10%" }}
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 items-stretch"
+          >
+            <ImpactStatCard
+              value={2000}
+              suffix="+"
+              label="Women Reached"
+              sublabel="Educated & enrolled in government welfare schemes."
+              tag="Legal Literacy"
+              icon={Users}
+              accent="burgundy"
+            />
+            <ImpactStatCard
+              value={800}
+              suffix="+"
+              label="Children Impacted"
+              sublabel="Access to learning spaces & book banks."
+              tag="Reading Room"
+              icon={GraduationCap}
+              accent="gold"
+            />
+            <ImpactStatCard
+              value={2500}
+              prefix="$"
+              suffix=" USD"
+              label="IB Global Grant"
+              sublabel="Festival of Hope Youth Action Fund grant winner."
+              tag="Global Winner"
+              icon={Award}
+              accent="burgundy"
+            />
+            <ImpactStatCard
+              value={12}
+              suffix="+ Mos"
+              label="Fieldwork"
+              sublabel="Consistent clinics in Noida & Mahipalpur."
+              tag="Sustained"
+              icon={Calendar}
+              accent="gold"
+            />
+          </motion.div>
+        </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6 lg:col-span-6"
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/70 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-burgundy)]">
-              <Building2 className="size-3.5" />
-              <span>{home.rightsToReality.eyebrow}</span>
-            </div>
-            <h2 className="font-[family-name:var(--font-playfair)] text-3xl font-bold tracking-tight text-[var(--color-burgundy)] sm:text-4xl lg:text-5xl lg:leading-[1.12]">
-              {home.rightsToReality.title}
-            </h2>
-            <p className="text-lg font-medium leading-relaxed text-foreground">
-              {home.rightsToReality.lead}
-            </p>
-            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
-              {home.rightsToReality.body.map((p, idx) => (
-                <p key={idx}>{p}</p>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2 pt-2">
-              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
-                Noida Sector 8
-              </span>
-              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
-                Vasant Kunj
-              </span>
-              <span className="rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
-                Mahipalpur Camps
-              </span>
-              <span className="rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/60 px-3 py-1 text-xs font-semibold text-foreground">
-                Partner: Hamari Pahchan NGO
-              </span>
-            </div>
-          </motion.div>
+      {/* 3. PILLARS OF CHANGE: Photo-driven visual cards with Radiant Shine */}
+      <section className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        {/* Soft Ambient Gold Aura */}
+        <div className="glow-ambient-gold -top-24 right-10 size-[420px] opacity-45" />
+        <div className="glow-ambient-gold bottom-10 left-10 size-[380px] opacity-40" />
 
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center max-w-xl mx-auto mb-10 relative z-[1]"
+        >
+          <span className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-burgundy)]">
+            What We Do
+          </span>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            Pillars of Change
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch relative z-[1]">
+          {/* Pillar 1: Advocacy Clinic */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-4 lg:col-span-6"
+            transition={{ delay: 0.05 }}
+            className="h-full flex flex-col"
           >
-            {home.rightsToReality.pillars.map((pillar, i) => {
-              const icons = [Building2, ShieldCheck, GraduationCap, Mic2];
-              const Icon = icons[i] ?? Building2;
-              return (
-                <div
-                  key={pillar.title}
-                  className="rounded-2xl border border-border bg-card p-5 shadow-xs transition-all hover:border-[var(--color-gold)]/40 hover:shadow-md"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)]">
-                        <Icon className="size-5" />
-                      </div>
-                      <h3 className="text-base font-semibold text-foreground">
-                        {pillar.title}
-                      </h3>
-                    </div>
-                    <span className="shrink-0 rounded-full border border-[var(--color-burgundy)]/20 bg-[var(--color-cream)]/50 px-2.5 py-0.5 text-[11px] font-semibold text-[var(--color-burgundy)]">
-                      {pillar.badge}
-                    </span>
+            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
+            <Link
+              href="/initiative#clinic"
+              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
+            >
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
+                <Image
+                  src="/Pillars%20Of%20Change/Advocacy%20Clinics/1%20Right%20Of%20Reality%20.jpeg"
+                  alt="Advocacy clinic session"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className="object-cover object-[50%_15%] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
+                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                    Grassroots Action
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
+                    <Scale className="size-4 shrink-0 mt-0.5" />
+                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
+                      Advocacy Clinic &amp; Welfare Access
+                    </h3>
                   </div>
-                  <p className="mt-2.5 pl-12 text-sm leading-relaxed text-muted-foreground">
-                    {pillar.desc}
+                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
+                    Weekly Anganwadi sessions guiding women through welfare scheme documentation, legal protections, and government entitlements.
                   </p>
                 </div>
-              );
-            })}
+                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                  <span>View clinic model</span>
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </Link>
+            </TiltCard>
+          </motion.div>
+
+          {/* Pillar 2: Voices Unheard & Slam Poetry Performance */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.12 }}
+            className="h-full flex flex-col"
+          >
+            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
+            <Link
+              href="/voices"
+              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
+            >
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
+                <Image
+                  src="/Pillars%20Of%20Change/Voices%20Unheard%20%26%20Slam%20Poetry%20Performance/2.jpeg"
+                  alt="Voices Unheard slam poetry performance"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className="object-cover object-[50%_15%] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
+                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                    Stage Advocacy
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
+                    <Mic2 className="size-4 shrink-0 mt-0.5" />
+                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
+                      Voices Unheard: Slam Poetry Performance
+                    </h3>
+                  </div>
+                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
+                    Transforming lived community conversations into spoken-word poetry performed across school assemblies and literary festivals.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                  <span>Explore poetry wing</span>
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </Link>
+            </TiltCard>
+          </motion.div>
+
+          {/* Pillar 3: F-1 World National Finals, Marketing & Social initiative */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.19 }}
+            className="h-full flex flex-col"
+          >
+            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
+            <Link
+              href="/initiative#f1"
+              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
+            >
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
+                <Image
+                  src="/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg"
+                  alt="F-1 World National Finals, Marketing & Social initiative"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className="object-cover object-[50%_0%] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
+                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                    Marketing &amp; Social initiative
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
+                    <Megaphone className="size-4 shrink-0 mt-0.5" />
+                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
+                      F-1 World National Finals, Marketing &amp; Social initiative
+                    </h3>
+                  </div>
+                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
+                    Representing India at World Finals managing marketing, sustainability strategy, pit display design, and Women in STEM campaigns.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                  <span>Explore Team Blaze</span>
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </Link>
+            </TiltCard>
+          </motion.div>
+
+          {/* Pillar 4: Reading Room & Teacher Training Programme */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.26 }}
+            className="h-full flex flex-col"
+          >
+            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
+            <Link
+              href="/initiative#reading-room"
+              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
+            >
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
+                <Image
+                  src="/Pillars%20Of%20Change/Teacher%20Training%20Program/1.jpeg"
+                  alt="Reading Room & Teacher Training Programme"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className="object-cover object-[50%_50%] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
+                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                    Community Literacy
+                  </span>
+                </div>
+              </div>
+              <div className="p-5 flex flex-col justify-between flex-1">
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
+                    <BookOpen className="size-4 shrink-0 mt-0.5" />
+                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
+                      Reading Room & Teacher Training Programme
+                    </h3>
+                  </div>
+                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
+                    Establishing community reading sanctuaries paired with educator training workshops alongside SEWA Bharti and Kitaab4U.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
+                  <span>See reading &amp; training</span>
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                </div>
+              </div>
+            </Link>
+            </TiltCard>
           </motion.div>
         </div>
       </section>
 
-      <section className="bg-secondary/50 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)]">
-            The Gap We Bridge
-          </h2>
-          <div className="relative mx-auto mt-10 max-w-3xl rounded-3xl border border-[var(--color-gold)]/20 bg-[var(--color-cream)]/45 px-3 py-8 shadow-sm sm:px-6 sm:py-12">
-            <div className="relative mx-auto flex h-[min(370px,85vw)] sm:h-[400px] max-w-xl items-center justify-center">
-              <svg
-                viewBox="0 0 440 370"
-                className="h-full w-full max-w-full"
-                preserveAspectRatio="xMidYMid meet"
-                aria-hidden
-              >
-              <motion.circle
-                cx="155"
-                cy="145"
-                r="95"
-                fill="oklch(0.55 0.12 350 / 0.25)"
-                stroke="var(--color-burgundy)"
-                strokeWidth="2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              />
-              <motion.circle
-                cx="285"
-                cy="145"
-                r="95"
-                fill="oklch(0.75 0.12 75 / 0.2)"
-                stroke="var(--color-gold)"
-                strokeWidth="2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-              />
-              <motion.circle
-                cx="220"
-                cy="225"
-                r="95"
-                fill="oklch(0.45 0.08 250 / 0.2)"
-                stroke="var(--color-burgundy)"
-                strokeOpacity="0.5"
-                strokeWidth="2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
-              </svg>
-              <div className="pointer-events-none absolute left-1/2 top-[46.5%] -translate-x-1/2 -translate-y-1/2 px-4 text-center">
-                <p className="rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-4 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur-sm">
-                  {home.venn.center}
-                </p>
-              </div>
-              <span className="absolute left-[3%] top-[10%] rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-[var(--color-burgundy)] shadow-sm backdrop-blur-sm sm:left-[6%] sm:text-sm">
-                {home.venn.circles[0]}
+      {/* 4. VISUAL PHOTO SNAPSHOTS: Zero text, high proof with Shine */}
+      <section className="relative border-y border-[var(--color-gold)]/25 bg-[var(--color-cream)]/35 py-14 sm:py-20 overflow-hidden">
+        <div className="glow-ambient-gold -top-20 -right-20 size-[450px] opacity-35" />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8"
+          >
+            <div>
+              <span className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-burgundy)]">
+                Field Archive
               </span>
-              <span className="absolute right-[3%] top-[10%] rounded-full border border-[var(--color-gold)]/40 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:right-[6%] sm:text-sm">
-                {home.venn.circles[1]}
-              </span>
-              <span className="absolute bottom-[3%] left-1/2 -translate-x-1/2 rounded-full border border-[var(--color-burgundy)]/20 bg-background/85 px-3 py-1 text-center text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm sm:bottom-[4%] sm:text-sm">
-                {home.venn.circles[2]}
-              </span>
+              <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                In The Communities
+              </h2>
             </div>
-          </div>
-        </div>
-      </section>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-burgundy)] hover:underline"
+            >
+              View complete archive <ArrowRight className="size-3.5" />
+            </Link>
+          </motion.div>
 
-      <section className="bg-[var(--color-paper)] border-y border-border py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[var(--color-burgundy)] mb-12">
-            Key Highlights
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {achievements.highlights.map((h, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
+            {[
+              {
+                src: "/in-the-communities/right-of-reality.jpeg",
+                caption: "Right to Reality · Advocacy Clinic",
+              },
+              {
+                src: "/in-the-communities/voice-unheard-theatre.jpg",
+                caption: "Voice Unheard Theatre · Delhi",
+                position: "object-left",
+              },
+              {
+                src: "/in-the-communities/f1.png",
+                caption: "F-1 · Marketing & Social Initiative",
+              },
+              {
+                src: "/in-the-communities/teacher-training-programe.jpg",
+                caption: "Teacher Training Programme · Shakurpur",
+              },
+            ].map((photo, i) => (
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
+                key={photo.caption}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-border bg-card p-5 shadow-xs hover:shadow-md transition-shadow"
+                transition={{ delay: i * 0.08 }}
+                whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                className="shine-card group relative aspect-[3/4] overflow-hidden rounded-2xl border border-[var(--color-gold)]/35 bg-muted shadow-xs"
               >
-                <span className="text-2xl mb-3 block" role="img" aria-label="Highlight icon">
-                  {h.emoji}
-                </span>
-                <p className="text-sm font-medium text-foreground leading-relaxed">
-                  {h.text}
-                </p>
+                <Image
+                  src={photo.src}
+                  alt={photo.caption}
+                  fill
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className={cn(
+                    "object-cover transition-transform duration-500 group-hover:scale-105",
+                    photo.position || "object-[50%_15%]"
+                  )}
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 pt-6 text-white">
+                  <p className="text-[11px] font-semibold leading-tight">{photo.caption}</p>
+                </div>
               </motion.div>
             ))}
           </div>
-
-          <div className="mt-16 rounded-2xl border border-[var(--color-gold)]/35 bg-[var(--color-cream)]/30 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 shadow-sm">
-            <div className="space-y-2">
-              <h4 className="font-[family-name:var(--font-playfair)] text-xl font-bold text-[var(--color-burgundy)]">
-                Official IB Project Showcase
-              </h4>
-              <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-                Rights to Reality Advocacy Clinic & Voices Unheard has been officially featured in the International Baccalaureate (IB) Festival of Hope showcase, celebrating Srishti’s mission and community impact.
-              </p>
-            </div>
-            <a
-              href="https://ibo.org/festival-of-hope/youth-in-action/rights-to-reality-advocacy-clinic--voices-unheard?contentId=207578"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                "bg-[var(--color-burgundy)] text-primary-foreground hover:bg-[var(--color-burgundy)]/90 font-semibold shrink-0 flex items-center gap-2"
-              )}
-            >
-              View Official Showcase <ExternalLink className="size-4" />
-            </a>
-          </div>
         </div>
       </section>
 
-      <section className="overflow-hidden border-y border-border bg-card py-8">
-        <p className="mb-2 text-center text-xs font-semibold tracking-widest text-muted-foreground uppercase">
-          From our Voices Unheard performances
-        </p>
+      {/* 5. GLOBAL RECOGNITION BANNER with Golden Luster */}
+      <section className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6 md:py-20">
+        <div className="glow-ambient-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[520px] opacity-45" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="shine-card relative rounded-3xl border border-[var(--color-gold)]/50 bg-gradient-to-r from-[var(--color-cream)]/90 via-white/80 to-[var(--color-cream)]/90 p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 shadow-[0_12px_40px_-8px_rgba(201,168,76,0.25)]"
+        >
+          <div className="space-y-2 max-w-xl">
+            <span className="shine-badge inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/40 bg-white/70 px-3 py-0.5 text-xs font-bold uppercase tracking-widest text-[var(--color-burgundy)]">
+              <Award className="size-3.5" /> International Baccalaureate
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              Winner, Global Youth Action Fund
+            </h3>
+            <p className="text-xs sm:text-sm font-semibold text-foreground/90 leading-relaxed">
+              Awarded <span className="font-bold text-[var(--color-burgundy)]">USD 2,500</span> by the IB Festival of Hope and acknowledged by the UP Ministry of Women’s Welfare.
+            </p>
+          </div>
+          <Magnetic className="shrink-0">
+            <a
+              href={achievements.ibLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shine-button inline-flex items-center gap-2 rounded-full bg-[var(--color-burgundy)] px-6 py-3 text-xs sm:text-sm font-semibold text-white transition-all shrink-0 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Official IB Showcase <ExternalLink className="size-3.5" />
+            </a>
+          </Magnetic>
+        </motion.div>
+      </section>
+
+      {/* 6. POEM TICKER */}
+      <section className="border-y border-[var(--color-gold)]/25 bg-[var(--color-cream)]/40 py-6 overflow-hidden">
         <InfiniteMovingCards items={[...home.poemTicker]} speed={55} />
       </section>
 
-      <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <LampContainer>
-          <p className="text-center text-balance font-[family-name:var(--font-playfair)] text-xl font-semibold text-[var(--color-burgundy)] sm:text-2xl md:text-3xl">
-            {home.ctaBanner}
+      {/* 7. WARM PERSONAL CLOSING with Radiant Accents */}
+      <section className="relative mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20 text-center">
+        <div className="glow-ambient-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[440px] opacity-40" />
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative z-[1]"
+        >
+          <Quote className="size-7 mx-auto text-[var(--color-gold)] mb-3" />
+          <p className="font-serif italic font-semibold text-lg sm:text-xl md:text-2xl leading-relaxed text-foreground max-w-xl mx-auto">
+            &ldquo;What we whisper in community circles, we owe to the stage — with dignity and care.&rdquo;
           </p>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/about"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "bg-[var(--color-burgundy)] text-primary-foreground hover:bg-[var(--color-burgundy)]/90"
-              )}
-            >
-              Meet Our Founder
-            </Link>
+          <p className="mt-3 text-sm font-bold text-foreground">
+            Srishti Aggarwal
+          </p>
+          <p className="text-xs font-semibold text-foreground/80">
+            Founder, Rights to Reality &amp; Voices Unheard
+          </p>
+
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <Magnetic>
+              <Link
+                href="/contact"
+                className="shine-button rounded-full bg-[var(--color-burgundy)] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Get in Touch
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <Link
+                href="/about"
+                className="shine-card rounded-full border border-[var(--color-burgundy)]/30 bg-white/75 px-6 py-2.5 text-sm font-semibold text-[var(--color-burgundy)] hover:bg-[var(--color-cream)]/85 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Read Story
+              </Link>
+            </Magnetic>
           </div>
-        </LampContainer>
+        </motion.div>
       </section>
     </div>
   );

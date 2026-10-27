@@ -1,9 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { PublicGalleryImage } from "@/lib/public-gallery-image";
 import { getGalleryImageCaption } from "@/lib/utils";
 
@@ -19,17 +26,14 @@ type GalleryLightboxProps = {
   onChangeIndex: (i: number) => void;
 };
 
-export function GalleryLightbox({
-  images,
-  index,
-  onClose,
-  onChangeIndex,
-}: GalleryLightboxProps) {
+export function GalleryLightbox({ images, index, onClose, onChangeIndex }: GalleryLightboxProps) {
   const open = index !== null;
   const count = images.length;
   const current = index !== null && index >= 0 && index < count ? images[index] : null;
   const caption =
-    index !== null && count > 0 && current ? getGalleryImageCaption(current.filename, index) : "";
+    index !== null && count > 0 && current
+      ? getGalleryImageCaption(current.filename, index, current.category)
+      : "";
 
   const goPrev = useCallback(() => {
     if (index === null || count === 0) return;
@@ -44,10 +48,7 @@ export function GalleryLightbox({
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      } else if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft") {
         e.preventDefault();
         goPrev();
       } else if (e.key === "ArrowRight") {
@@ -56,88 +57,67 @@ export function GalleryLightbox({
       }
     };
     window.addEventListener("keydown", onKey);
-    // Lock body scroll when lightbox is open
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, goPrev, goNext, onClose]);
-
-  if (!open || !current) return null;
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, goPrev, goNext]);
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Image preview lightbox"
-      className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-black/90 p-4 backdrop-blur-md animate-in fade-in duration-200"
-    >
-      {/* Top Header Bar */}
-      <div className="flex w-full max-w-6xl items-center justify-between py-2 text-white">
-        <span className="text-sm font-medium tracking-wide text-white/75">
-          Photo {index! + 1} of {count}
-        </span>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="size-10 rounded-full text-white/80 hover:bg-white/10 hover:text-white"
-          aria-label="Close lightbox"
-        >
-          <X className="size-5" />
-        </Button>
-      </div>
-
-      {/* Main Image Area with Previous/Next Controls */}
-      <div className="relative flex w-full max-w-6xl flex-1 items-center justify-center py-2">
-        {/* Previous Button */}
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={goPrev}
-            className="absolute left-2 z-10 flex size-12 items-center justify-center rounded-full bg-black/50 text-white/90 backdrop-blur-sm transition-all hover:scale-105 hover:bg-black/80 hover:text-white sm:left-4"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="size-6" />
-          </button>
-        )}
-
-        {/* Center Image */}
-        <div className="relative h-[min(75vh,700px)] w-full max-w-4xl overflow-hidden rounded-xl">
-          <Image
-            src={current.src}
-            alt={altFromFilename(current.filename)}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1100px"
-            quality={75}
-            unoptimized={current.unoptimized}
-            priority
-          />
-        </div>
-
-        {/* Next Button */}
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={goNext}
-            className="absolute right-2 z-10 flex size-12 items-center justify-center rounded-full bg-black/50 text-white/90 backdrop-blur-sm transition-all hover:scale-105 hover:bg-black/80 hover:text-white sm:right-4"
-            aria-label="Next image"
-          >
-            <ChevronRight className="size-6" />
-          </button>
-        )}
-      </div>
-
-      {/* Bottom Caption Bar */}
-      <div className="w-full max-w-3xl pb-2 text-center text-white">
-        <p className="text-sm font-medium text-white/90 sm:text-base">
-          {caption}
-        </p>
-      </div>
-    </div>
+    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
+      <DialogContent
+        showCloseButton
+        className="max-h-[min(92vh,900px)] max-w-[min(calc(100vw-1rem),56rem)] gap-3 border-border p-3 sm:max-w-[min(calc(100vw-2rem),56rem)] sm:p-4"
+      >
+        {current ? (
+          <>
+            <DialogHeader className="sr-only">
+              <DialogTitle>
+                Gallery image {index! + 1} of {count}
+              </DialogTitle>
+              <DialogDescription>{caption}</DialogDescription>
+            </DialogHeader>
+            <div className="relative h-[min(78vh,720px)] min-h-[200px] w-full overflow-hidden rounded-lg bg-muted">
+              <Image
+                src={current.src}
+                alt={altFromFilename(current.filename)}
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 96vw, min(896px, 92vw)"
+                quality={current.unoptimized ? undefined : 75}
+                unoptimized={current.unoptimized}
+                loading="lazy"
+                placeholder="empty"
+              />
+            </div>
+            <p className="truncate px-1 text-center text-xs text-muted-foreground">{caption}</p>
+            <div className="flex items-center justify-between gap-2 border-t border-border pt-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="gap-1"
+                onClick={goPrev}
+                disabled={count < 2}
+              >
+                <ChevronLeft className="size-4" aria-hidden />
+                Previous
+              </Button>
+              <span className="text-xs tabular-nums text-muted-foreground">
+                {index! + 1} / {count}
+              </span>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="gap-1"
+                onClick={goNext}
+                disabled={count < 2}
+              >
+                Next
+                <ChevronRight className="size-4" aria-hidden />
+              </Button>
+            </div>
+          </>
+        ) : null}
+      </DialogContent>
+    </Dialog>
   );
 }

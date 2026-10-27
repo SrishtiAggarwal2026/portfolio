@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   ChevronRight,
   HeartHandshake,
+  Library,
   Play,
   Sparkles,
   Users,
@@ -16,7 +17,6 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -25,8 +25,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
 import { readingRoom } from "@/data/site";
-import { cn } from "@/lib/utils";
 
 type MediaItem = (typeof readingRoom.media)[number];
 
@@ -35,8 +35,6 @@ export function ReadingRoomSection() {
 
   const currentMedia: MediaItem | null =
     selectedMediaIndex !== null ? readingRoom.media[selectedMediaIndex] : null;
-
-  const isPortrait = currentMedia?.type === "video";
 
   const handlePrev = () => {
     if (selectedMediaIndex === null) return;
@@ -51,172 +49,176 @@ export function ReadingRoomSection() {
   };
 
   return (
-    <section id="reading-room" className="scroll-mt-20 border-t border-border bg-gradient-to-b from-background via-secondary/20 to-background py-16 md:py-24">
+    <section id="reading-room" className="scroll-mt-20 border-t border-[var(--color-gold)]/25 bg-[var(--color-paper)] py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* Header Badge & Title */}
-        <div className="mx-auto max-w-3xl text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-3xl text-center"
+        >
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-burgundy)] backdrop-blur-xs">
             <BookOpen className="size-3.5" aria-hidden />
-            <span>Community Literacy Initiative</span>
+            <span>Community Literacy Hub</span>
           </div>
-          <h2 className="mt-4 font-[family-name:var(--font-playfair)] text-3xl font-bold tracking-tight text-[var(--color-burgundy)] sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--color-burgundy)] sm:text-4xl">
             {readingRoom.title}
           </h2>
           <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-            A joint initiative by <strong className="font-semibold text-foreground">Srishti Aggarwal</strong> &amp;{" "}
-            <strong className="font-semibold text-foreground">Vedika (Kitaab4U)</strong> in collaboration with{" "}
-            <strong className="font-semibold text-foreground">SEWA Bharti</strong> in Shakurpur, Delhi.
+            Srishti Aggarwal &amp; Vedika (Kitaab4U) in collaboration with SEWA Bharti in Shakurpur, Delhi.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Narrative & Story Cards Grid */}
-        <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:items-stretch">
-          <Card className="flex flex-col border-border/80 bg-card/60 shadow-sm backdrop-blur-xs lg:col-span-7">
-            <CardHeader>
-              <div className="flex items-center gap-2 text-xs font-medium text-[var(--color-gold)]">
+        {/* Visual Bento Overview */}
+        <div className="mt-12 grid gap-6 lg:grid-cols-12 lg:items-stretch">
+          {/* Left: Purpose & Collaboration */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-panel rounded-2xl border border-[var(--color-gold)]/30 bg-card/80 p-6 sm:p-8 shadow-xs hover:shadow-lg transition-all lg:col-span-7 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-gold)]">
                 <Building2 className="size-4" />
                 <span>Shakurpur, Delhi · SEWA Bharti Center</span>
               </div>
-              <CardTitle className="font-[family-name:var(--font-playfair)] text-2xl text-foreground">
-                Expanding Access to Educational Resources
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {readingRoom.paragraphs.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Featured Summary Callout & Media */}
-          <div className="flex flex-col gap-6 lg:col-span-5">
-            <div className="rounded-2xl border border-[var(--color-gold)]/30 bg-[var(--color-cream)]/50 p-6 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--color-burgundy)] text-white shadow-xs">
-                  <HeartHandshake className="size-5" />
-                </div>
-                <div>
-                  <h3 className="font-[family-name:var(--font-playfair)] text-lg font-semibold text-[var(--color-burgundy)]">
-                    Collaborative Youth Leadership
-                  </h3>
-                  <p className="text-xs text-muted-foreground">Srishti Aggarwal &amp; Vedika</p>
-                </div>
-              </div>
-              <ul className="mt-4 space-y-3 text-sm text-foreground/90">
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 flex size-2 shrink-0 rounded-full bg-[var(--color-gold)]" />
-                  <span>
-                    <strong>Kitaab4U (Vedika):</strong> Community book drive collection across local networks.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 flex size-2 shrink-0 rounded-full bg-[var(--color-burgundy)]" />
-                  <span>
-                    <strong>Srishti Aggarwal:</strong> Donated structural book racks and contributed additional educational books.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 flex size-2 shrink-0 rounded-full bg-emerald-600" />
-                  <span>
-                    <strong>SEWA Bharti:</strong> Venue partner in Shakurpur providing safe space for regular reading circles.
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Featured Image Spotlight */}
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border bg-muted shadow-sm">
-              <Image
-                src="/books/Reading room 1.jpeg"
-                alt="Children reading in Shakurpur Reading Room"
-                fill
-                sizes="(max-width: 1024px) 100vw, 420px"
-                className="object-cover transition-transform duration-500 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-3 left-3 right-3 text-white">
-                <p className="text-xs font-semibold drop-shadow">Community Reading Space</p>
-                <p className="text-[11px] text-white/85 drop-shadow">Regular reading circles and literacy sessions for children</p>
+              <h3 className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                Safe Learning Sanctuaries for Children
+              </h3>
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {readingRoom.paragraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
             </div>
 
-            {/* Quick Stats banner */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <div className="rounded-xl border border-border bg-card p-3.5 text-center shadow-2xs">
-                <div className="text-xl sm:text-2xl font-bold text-[var(--color-burgundy)] font-[family-name:var(--font-playfair)]">
-                  100+
-                </div>
-                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Books Collected &amp; Shelved</div>
+            {/* Partnership Chips */}
+            <div className="mt-6 pt-6 border-t border-[var(--color-gold)]/20 grid gap-2.5 sm:grid-cols-3 text-xs">
+              <div className="rounded-xl border border-[var(--color-gold)]/25 bg-[var(--color-cream)]/50 p-2.5 hover:border-[var(--color-gold)] transition-colors">
+                <p className="font-bold text-[var(--color-burgundy)]">Kitaab4U (Vedika)</p>
+                <p className="mt-0.5 text-muted-foreground">Community book drives</p>
               </div>
-              <div className="rounded-xl border border-border bg-card p-3.5 text-center shadow-2xs">
-                <div className="text-xl sm:text-2xl font-bold text-[var(--color-gold)] font-[family-name:var(--font-playfair)]">
-                  Shakurpur
-                </div>
-                <div className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Community Focus Area</div>
+              <div className="rounded-xl border border-[var(--color-gold)]/25 bg-[var(--color-cream)]/50 p-2.5 hover:border-[var(--color-gold)] transition-colors">
+                <p className="font-bold text-[var(--color-burgundy)]">Srishti Aggarwal</p>
+                <p className="mt-0.5 text-muted-foreground">Racks &amp; book donations</p>
+              </div>
+              <div className="rounded-xl border border-[var(--color-gold)]/25 bg-[var(--color-cream)]/50 p-2.5 hover:border-[var(--color-gold)] transition-colors">
+                <p className="font-bold text-[var(--color-burgundy)]">SEWA Bharti</p>
+                <p className="mt-0.5 text-muted-foreground">Center venue partner</p>
               </div>
             </div>
+          </motion.div>
+
+          {/* Right: Quick Stat Tiles */}
+          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, x: 12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.05 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="glass-panel rounded-2xl border border-[var(--color-gold)]/30 bg-card/80 p-5 shadow-xs hover:shadow-md transition-all flex items-center gap-4"
+            >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-burgundy)]/10 text-[var(--color-burgundy)]">
+                <Library className="size-6" />
+              </div>
+              <div>
+                <p className="text-2xl font-extrabold text-[var(--color-burgundy)] tabular-nums">100+ Books</p>
+                <p className="text-xs text-muted-foreground">Shelved and curated on permanent racks</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.12 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="glass-panel rounded-2xl border border-[var(--color-gold)]/30 bg-card/80 p-5 shadow-xs hover:shadow-md transition-all flex items-center gap-4"
+            >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-gold)]/15 text-[var(--color-gold)]">
+                <HeartHandshake className="size-6" />
+              </div>
+              <div>
+                <p className="text-2xl font-extrabold text-foreground">Youth-Led</p>
+                <p className="text-xs text-muted-foreground">Peer-driven community literacy blueprint</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.19 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="glass-panel rounded-2xl border border-[var(--color-gold)]/30 bg-card/80 p-5 shadow-xs hover:shadow-md transition-all flex items-center gap-4"
+            >
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                <Sparkles className="size-6" />
+              </div>
+              <div>
+                <p className="text-2xl font-extrabold text-foreground">Weekly Circles</p>
+                <p className="text-xs text-muted-foreground">Regular reading sessions &amp; story time</p>
+              </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Key Highlights Section */}
-        <div className="mt-16 sm:mt-20">
-          <div className="flex items-center gap-3">
-            <Sparkles className="size-5 text-[var(--color-gold)]" />
-            <h3 className="font-[family-name:var(--font-playfair)] text-2xl font-bold text-[var(--color-burgundy)]">
-              Key Highlights
-            </h3>
-          </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {readingRoom.highlights.map((highlight, index) => (
-              <motion.div
-                key={highlight.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Card className="h-full border-border/70 bg-card transition-all hover:border-[var(--color-gold)]/40 hover:shadow-md">
-                  <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-2">
-                    <span className="text-2xl" role="img" aria-label={highlight.title}>
-                      {highlight.emoji}
-                    </span>
-                    <CardTitle className="text-base font-semibold text-foreground">
-                      {highlight.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      {highlight.desc}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+        {/* Highlights: 4 Clean Cards */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {readingRoom.highlights.map((highlight, index) => (
+            <motion.div
+              key={highlight.title}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="glass-panel rounded-xl border border-[var(--color-gold)]/25 bg-card/70 p-4 shadow-xs hover:shadow-md transition-all"
+            >
+              <span className="text-2xl" role="img" aria-label={highlight.title}>
+                {highlight.emoji}
+              </span>
+              <h4 className="mt-2 text-sm font-bold text-foreground">{highlight.title}</h4>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{highlight.desc}</p>
+            </motion.div>
+          ))}
         </div>
 
         {/* Photo & Video Gallery */}
-        <div className="mt-16 sm:mt-20">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6"
+          >
             <div>
-              <h3 className="font-[family-name:var(--font-playfair)] text-2xl font-bold text-[var(--color-burgundy)] flex items-center gap-2">
+              <h3 className="text-2xl font-bold tracking-tight text-[var(--color-burgundy)] flex items-center gap-2">
                 <Users className="size-5 text-[var(--color-gold)]" />
-                <span>Reading Room Gallery &amp; Video</span>
+                <span>On-Ground Media Gallery</span>
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                On-ground moments at the Shakurpur Reading Room &amp; Book Bank initialization.
+                Moments from the Shakurpur Reading Room, Book Bank setup &amp; Teacher Training workshops.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Media Grid */}
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-4">
             {readingRoom.media.map((item, index) => (
-              <button
+              <motion.button
                 key={item.src}
                 type="button"
                 onClick={() => setSelectedMediaIndex(index)}
-                className="group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-muted text-left transition-all hover:border-[var(--color-gold)] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.04 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--color-gold)]/30 bg-muted text-left transition-all hover:border-[var(--color-gold)] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
               >
                 {item.type === "image" ? (
                   <Image
@@ -224,7 +226,9 @@ export function ReadingRoomSection() {
                     alt={item.alt}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    placeholder="blur"
+                    blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
                   <div className="relative size-full bg-slate-950">
@@ -234,7 +238,7 @@ export function ReadingRoomSection() {
                       playsInline
                       preload="metadata"
                       aria-label={item.alt}
-                      className="size-full object-cover opacity-85 transition-transform duration-300 group-hover:scale-105"
+                      className="size-full object-cover opacity-85 transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[1px]">
                       <div className="flex size-11 items-center justify-center rounded-full bg-[var(--color-burgundy)] text-white shadow-lg transition-transform group-hover:scale-110">
@@ -243,7 +247,7 @@ export function ReadingRoomSection() {
                     </div>
                   </div>
                 )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white opacity-90 transition-opacity">
+                <div className="absolute inset-x-0 bottom-0 bg-black/80 p-2 text-white opacity-90 transition-opacity">
                   <div className="flex items-center justify-between text-[11px] font-medium">
                     <span className="truncate">{item.alt}</span>
                     <Badge variant="outline" className="ml-1 shrink-0 border-white/40 bg-black/30 text-[9px] text-white">
@@ -251,7 +255,7 @@ export function ReadingRoomSection() {
                     </Badge>
                   </div>
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>

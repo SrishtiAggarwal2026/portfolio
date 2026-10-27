@@ -1,15 +1,19 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 export function InfiniteMovingCards({
   items,
   direction = "left",
   speed = 40,
   variant = "default",
+  itemClassName,
 }: {
   items: string[];
   direction?: "left" | "right";
   speed?: number;
   variant?: "default" | "headline";
+  itemClassName?: string;
 }) {
   const doubled = [...items, ...items];
   const headline = variant === "headline";
@@ -25,11 +29,12 @@ export function InfiniteMovingCards({
         {doubled.map((t, i) => (
           <span
             key={`${i}-${t.slice(0, 12)}`}
-            className={
+            className={cn(
               headline
-                ? "inline-flex shrink-0 items-center font-[family-name:var(--font-playfair)] text-base italic text-[var(--color-burgundy)] sm:text-lg"
-                : "inline-block w-[min(88vw,760px)] shrink-0 whitespace-normal px-2 text-center font-[family-name:var(--font-playfair)] text-base leading-relaxed italic text-[var(--color-burgundy)] sm:text-lg md:text-xl"
-            }
+                ? "inline-flex shrink-0 items-center font-serif text-base italic text-[var(--color-burgundy)] sm:text-lg"
+                : "inline-block w-[min(88vw,760px)] shrink-0 whitespace-normal px-2 text-center font-serif text-base leading-relaxed italic text-[var(--color-burgundy)] sm:text-lg md:text-xl",
+              itemClassName
+            )}
           >
             “{t}”
             <span className="mx-6 text-[var(--color-gold)]">✦</span>

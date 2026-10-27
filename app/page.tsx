@@ -11,6 +11,7 @@ export const metadata = createPageMetadata({
 });
 
 export default function Page() {
-  const heroImage = pickHeroGalleryImage(getPublicGalleryImages());
-  return <HomePage heroImage={heroImage} />;
+  const galleryImages = getPublicGalleryImages();
+  const heroImage = pickHeroGalleryImage(galleryImages);
+  return <HomePage heroImage={heroImage} galleryImages={galleryImages} />;
 }

@@ -27,79 +27,82 @@ export function GalleryPagination({
   const from = start + 1;
   const to = Math.min(start + pageSize, totalItems);
 
-  // Generate pagination window
-  const windowSize = 5;
+  const windowSize = 7;
   let startPage = Math.max(1, page - Math.floor(windowSize / 2));
-  let endPage = Math.min(totalPages, startPage + windowSize - 1);
+  const endPage = Math.min(totalPages, startPage + windowSize - 1);
   if (endPage - startPage + 1 < windowSize) {
     startPage = Math.max(1, endPage - windowSize + 1);
   }
   const pageNumbers: number[] = [];
-  for (let p = startPage; p <= endPage; p++) {
-    pageNumbers.push(p);
-  }
+  for (let p = startPage; p <= endPage; p++) pageNumbers.push(p);
 
   return (
     <nav
       className={cn(
-        "mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/80 pt-8 sm:flex-row",
+        "mt-10 flex flex-col items-stretch gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between",
         className
       )}
       aria-label="Gallery pagination"
     >
-      <p className="text-sm text-muted-foreground">
-        Showing <span className="font-semibold text-foreground">{from}–{to}</span> of{" "}
-        <span className="font-semibold text-foreground">{totalItems}</span> photos
+      <p className="text-center text-sm text-muted-foreground sm:text-left">
+        Showing <span className="font-medium text-foreground">{from}</span>–
+        <span className="font-medium text-foreground">{to}</span> of{" "}
+        <span className="font-medium text-foreground">{totalItems}</span>
       </p>
 
-      <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="h-9 gap-1 px-3 text-xs"
-          disabled={page <= 1}
-          onClick={() => onPageChange(page - 1)}
-        >
-          <ChevronLeft className="size-4" aria-hidden="true" />
-          Previous
-        </Button>
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-2">
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="gap-1"
+            disabled={page <= 1}
+            onClick={() => onPageChange(page - 1)}
+          >
+            <ChevronLeft className="size-4" aria-hidden />
+            Previous
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="gap-1"
+            disabled={page >= totalPages}
+            onClick={() => onPageChange(page + 1)}
+          >
+            Next
+            <ChevronRight className="size-4" aria-hidden />
+          </Button>
+        </div>
 
-        <div className="flex items-center gap-1">
-          {startPage > 1 && (
+        <div className="flex flex-wrap items-center justify-center gap-1">
+          {startPage > 1 ? (
             <>
               <Button
                 type="button"
                 variant={page === 1 ? "default" : "ghost"}
-                size="sm"
-                className={cn(
-                  "size-9 min-w-9 p-0 text-xs font-medium",
-                  page === 1 && "bg-[var(--color-burgundy)] text-white hover:bg-[var(--color-burgundy)]/90"
-                )}
+                size="icon-xs"
+                className="size-8 min-w-8"
                 onClick={() => onPageChange(1)}
               >
                 1
               </Button>
-              {startPage > 2 && (
-                <span className="px-1 text-xs text-muted-foreground" aria-hidden="true">
+              {startPage > 2 ? (
+                <span className="px-1 text-muted-foreground" aria-hidden>
                   …
                 </span>
-              )}
+              ) : null}
             </>
-          )}
+          ) : null}
 
           {pageNumbers.map((p) => (
             <Button
               key={p}
               type="button"
               variant={p === page ? "default" : "ghost"}
-              size="sm"
-              className={cn(
-                "size-9 min-w-9 p-0 text-xs font-medium",
-                p === page
-                  ? "bg-[var(--color-burgundy)] text-white hover:bg-[var(--color-burgundy)]/90"
-                  : "hover:bg-muted"
-              )}
+              size="icon-xs"
+              className="size-8 min-w-8"
               onClick={() => onPageChange(p)}
               aria-current={p === page ? "page" : undefined}
             >
@@ -107,40 +110,25 @@ export function GalleryPagination({
             </Button>
           ))}
 
-          {endPage < totalPages && (
+          {endPage < totalPages ? (
             <>
-              {endPage < totalPages - 1 && (
-                <span className="px-1 text-xs text-muted-foreground" aria-hidden="true">
+              {endPage < totalPages - 1 ? (
+                <span className="px-1 text-muted-foreground" aria-hidden>
                   …
                 </span>
-              )}
+              ) : null}
               <Button
                 type="button"
                 variant={page === totalPages ? "default" : "ghost"}
-                size="sm"
-                className={cn(
-                  "size-9 min-w-9 p-0 text-xs font-medium",
-                  page === totalPages && "bg-[var(--color-burgundy)] text-white hover:bg-[var(--color-burgundy)]/90"
-                )}
+                size="icon-xs"
+                className="size-8 min-w-8"
                 onClick={() => onPageChange(totalPages)}
               >
                 {totalPages}
               </Button>
             </>
-          )}
+          ) : null}
         </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="h-9 gap-1 px-3 text-xs"
-          disabled={page >= totalPages}
-          onClick={() => onPageChange(page + 1)}
-        >
-          Next
-          <ChevronRight className="size-4" aria-hidden="true" />
-        </Button>
       </div>
     </nav>
   );

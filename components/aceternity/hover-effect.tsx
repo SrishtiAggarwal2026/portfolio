@@ -12,14 +12,14 @@ export function HoverEffect({
 }) {
   return (
     <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 380, damping: 24 }}
+      whileHover={{ y: -6, scale: 1.012 }}
+      transition={{ type: "spring", stiffness: 240, damping: 20 }}
       className={cn(
-        "rounded-2xl border border-[var(--color-border)] bg-card/90 p-6 shadow-md ring-1 ring-black/[0.04] transition-shadow hover:shadow-xl hover:ring-[var(--color-burgundy)]/20",
+        "group relative overflow-hidden rounded-2xl border border-[var(--color-gold)]/25 bg-card/95 p-6 shadow-xs transition-all duration-300 hover:border-[var(--color-gold)]/60 hover:shadow-xl hover:shadow-[rgba(201,168,76,0.12)]",
         className
       )}
     >
-      {children}
+      <div className="relative z-[1]">{children}</div>
     </motion.div>
   );
 }
