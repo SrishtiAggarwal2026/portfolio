@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Newsreader } from "next/font/google";
 import { NavigationProgress } from "@/components/ui/navigation-progress";
 import { Footer } from "@/components/Footer";
+import { HashScroll } from "@/components/hash-scroll";
 import { Navbar } from "@/components/Navbar";
 import { BackToTop } from "@/components/motion/back-to-top";
 import { CursorGlow } from "@/components/motion/cursor-glow";
@@ -59,6 +60,7 @@ export default function RootLayout({
           <NavigationProgress />
           <CursorGlow />
           <JsonLd />
+          <HashScroll />
           <a
             href="#main-content"
             className="fixed left-4 top-4 z-[100] -translate-y-[220%] rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-lg transition-transform duration-200 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"

@@ -154,7 +154,7 @@ export default function ContactPage() {
                     autoComplete="name"
                     placeholder="Your name"
                     disabled={!formAction}
-                    className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                    className="h-11 md:h-10 border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -169,7 +169,7 @@ export default function ContactPage() {
                     autoComplete="email"
                     placeholder="your.email@example.org"
                     disabled={!formAction}
-                    className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                    className="h-11 md:h-10 border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function ContactPage() {
                   name="org"
                   placeholder="School, NGO, or institution"
                   disabled={!formAction}
-                  className="border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
+                  className="h-11 md:h-10 border-[var(--color-gold)]/30 focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40 bg-background/80"
                 />
               </div>
 
@@ -198,7 +198,7 @@ export default function ContactPage() {
                   defaultValue=""
                   disabled={!formAction}
                   className={cn(
-                    "flex h-10 w-full rounded-md border border-[var(--color-gold)]/30 bg-background/80 px-3 py-2 text-sm shadow-xs outline-none",
+                    "flex h-11 w-full rounded-md border border-[var(--color-gold)]/30 bg-background/80 px-3 py-2 text-base shadow-xs outline-none md:h-10 md:text-sm",
                     "focus-visible:border-[var(--color-burgundy)] focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/40",
                     !formAction && "cursor-not-allowed opacity-60"
                   )}
@@ -245,7 +245,7 @@ export default function ContactPage() {
       </section>
 
       {/* In Official Partnership */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}

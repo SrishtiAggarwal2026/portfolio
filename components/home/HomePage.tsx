@@ -8,6 +8,7 @@ import {
   Calendar,
   ExternalLink,
   GraduationCap,
+  Images,
   Megaphone,
   Mic2,
   Quote,
@@ -15,9 +16,10 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { CardSpotlight } from "@/components/aceternity/card-spotlight";
+import { GalleryLightbox } from "@/components/gallery/gallery-lightbox";
 import {
   DraggableCardStack,
   type DraggableCardItem,
@@ -26,12 +28,73 @@ import { InfiniteMovingCards } from "@/components/aceternity/infinite-moving-car
 import { Magnetic } from "@/components/motion/magnetic";
 import { Sparkles } from "@/components/motion/sparkles";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { TiltCard } from "@/components/motion/tilt-card";
 import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
 import { achievements, home } from "@/data/site";
 import { useCountUp } from "@/hooks/use-count-up";
-import type { PublicGalleryImage } from "@/lib/public-gallery-image";
+import { pillarGalleries, type PillarKey } from "@/lib/pillar-galleries";
 import { cn } from "@/lib/utils";
+
+const pillars: {
+  key: PillarKey;
+  title: string;
+  desc: string;
+  tag: string;
+  image: string;
+  imageAlt: string;
+  objectPosition: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href: string;
+  linkLabel: string;
+}[] = [
+  {
+    key: "clinic",
+    title: "Advocacy Clinic & Welfare Access",
+    desc: "Weekly Anganwadi sessions guiding women through welfare scheme documentation, legal protections, and government entitlements.",
+    tag: "Grassroots Action",
+    image: "/Pillars%20Of%20Change/Advocacy%20Clinics/1%20Right%20Of%20Reality%20.jpeg",
+    imageAlt: "Advocacy clinic session",
+    objectPosition: "object-[50%_15%]",
+    icon: Scale,
+    href: "/initiative#clinic",
+    linkLabel: "Learn more",
+  },
+  {
+    key: "voices",
+    title: "Voices Unheard: Slam Poetry Performance",
+    desc: "Transforming lived community conversations into spoken-word poetry performed across school assemblies and literary festivals.",
+    tag: "Stage Advocacy",
+    image: "/Pillars%20Of%20Change/Voices%20Unheard%20%26%20Slam%20Poetry%20Performance/2.jpeg",
+    imageAlt: "Voices Unheard slam poetry performance",
+    objectPosition: "object-[50%_15%]",
+    icon: Mic2,
+    href: "/voices",
+    linkLabel: "Learn more",
+  },
+  {
+    key: "f1",
+    title: "F-1 World National Finals, Marketing & Social initiative",
+    desc: "Representing India at World Finals managing marketing, sustainability strategy, pit display design, and Women in STEM campaigns.",
+    tag: "Marketing & Social initiative",
+    image: "/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg",
+    imageAlt: "F-1 World National Finals, Marketing & Social initiative",
+    objectPosition: "object-[50%_0%]",
+    icon: Megaphone,
+    href: "/initiative#f1",
+    linkLabel: "Learn more",
+  },
+  {
+    key: "readingRoom",
+    title: "Reading Room",
+    desc: "Establishing community reading sanctuaries paired with educator training workshops alongside SEWA Bharti and Kitaab4U.",
+    tag: "Community Literacy",
+    image: "/Pillars%20Of%20Change/Teacher%20Training%20Program/1.jpeg",
+    imageAlt: "Reading Room",
+    objectPosition: "object-[50%_50%]",
+    icon: BookOpen,
+    href: "/initiative#reading-room",
+    linkLabel: "Learn more",
+  },
+];
 
 const heroContainerVariants = {
   hidden: { opacity: 0 },
@@ -145,12 +208,8 @@ function ImpactStatCard({
   );
 }
 
-type HomePageProps = {
-  heroImage?: PublicGalleryImage | null;
-  galleryImages?: PublicGalleryImage[];
-};
-
-export function HomePage({ }: HomePageProps = {}) {
+export function HomePage() {
+  const [pillarView, setPillarView] = useState<{ key: PillarKey; index: number } | null>(null);
   const heroCards: DraggableCardItem[] = useMemo(() => {
     // Number-wise images 1 to 6 from public/hero/
     return [
@@ -223,7 +282,7 @@ export function HomePage({ }: HomePageProps = {}) {
         <div className="glow-ambient-gold top-1/4 -right-20 size-[360px] sm:size-[440px] opacity-55" />
         <Sparkles count={26} seed={11} />
 
-        <div className="relative z-[1] mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-14">
+        <div className="relative z-[1] mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:px-6 grid-cols-1 lg:grid-cols-12 lg:items-center lg:gap-14">
           <motion.div
             variants={heroContainerVariants}
             initial="hidden"
@@ -367,7 +426,7 @@ export function HomePage({ }: HomePageProps = {}) {
       </section>
 
       {/* 3. PILLARS OF CHANGE: Photo-driven visual cards with Radiant Shine */}
-      <section className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="relative overflow-x-clip w-full mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         {/* Soft Ambient Gold Aura */}
         <div className="glow-ambient-gold -top-24 right-10 size-[420px] opacity-45" />
         <div className="glow-ambient-gold bottom-10 left-10 size-[380px] opacity-40" />
@@ -387,206 +446,99 @@ export function HomePage({ }: HomePageProps = {}) {
         </motion.div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch relative z-[1]">
-          {/* Pillar 1: Advocacy Clinic */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
-            className="h-full flex flex-col"
-          >
-            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
-            <Link
-              href="/initiative#clinic"
-              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
-            >
-              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
-                <Image
-                  src="/Pillars%20Of%20Change/Advocacy%20Clinics/1%20Right%20Of%20Reality%20.jpeg"
-                  alt="Advocacy clinic session"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  placeholder="blur"
-                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                  className="object-cover object-[50%_15%] transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
-                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                    Grassroots Action
-                  </span>
-                </div>
-              </div>
-              <div className="p-5 flex flex-col justify-between flex-1">
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
-                    <Scale className="size-4 shrink-0 mt-0.5" />
-                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
-                      Advocacy Clinic &amp; Welfare Access
-                    </h3>
+          {pillars.map((pillar, i) => {
+            const Icon = pillar.icon;
+            const photoCount = pillarGalleries[pillar.key].length;
+            const openPhotos = () => {
+              if (photoCount > 0) setPillarView({ key: pillar.key, index: 0 });
+            };
+            return (
+              <motion.div
+                key={pillar.key}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.05 + i * 0.07 }}
+                className="h-full flex flex-col"
+              >
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View ${photoCount} photos: ${pillar.title}`}
+                    onClick={openPhotos}
+                    onKeyDown={(e) => {
+                      if (e.target !== e.currentTarget) return;
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        openPhotos();
+                      }
+                    }}
+                    className="shine-card group flex flex-col justify-between h-full w-full cursor-pointer rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+                  >
+                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
+                      <Image
+                        src={pillar.image}
+                        alt={pillar.imageAlt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        placeholder="blur"
+                        blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                        className={cn(
+                          "object-cover transition-transform duration-500 group-hover:scale-105",
+                          pillar.objectPosition
+                        )}
+                      />
+                      {photoCount > 0 ? (
+                        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                          <Images className="size-3" aria-hidden />
+                          {photoCount}
+                        </span>
+                      ) : null}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
+                        <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                          {pillar.tag}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-5 flex flex-col justify-between flex-1">
+                      <div className="flex-1 flex flex-col">
+                        <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
+                          <Icon className="size-4 shrink-0 mt-0.5" />
+                          <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
+                            {pillar.title}
+                          </h3>
+                        </div>
+                        <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
+                          {pillar.desc}
+                        </p>
+                      </div>
+                      <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center justify-between gap-2 text-xs font-semibold text-[var(--color-burgundy)]">
+                        <span className="inline-flex items-center gap-1.5">
+                          <Images className="size-3.5" aria-hidden />
+                          View photos
+                        </span>
+                        <Link
+                          href={pillar.href}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 rounded-full px-2 py-1 -mr-2 hover:bg-[var(--color-gold)]/15"
+                        >
+                          {pillar.linkLabel}
+                          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
-                    Weekly Anganwadi sessions guiding women through welfare scheme documentation, legal protections, and government entitlements.
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
-                  <span>View clinic model</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-            </TiltCard>
-          </motion.div>
-
-          {/* Pillar 2: Voices Unheard & Slam Poetry Performance */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.12 }}
-            className="h-full flex flex-col"
-          >
-            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
-            <Link
-              href="/voices"
-              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
-            >
-              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
-                <Image
-                  src="/Pillars%20Of%20Change/Voices%20Unheard%20%26%20Slam%20Poetry%20Performance/2.jpeg"
-                  alt="Voices Unheard slam poetry performance"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  placeholder="blur"
-                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                  className="object-cover object-[50%_15%] transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
-                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                    Stage Advocacy
-                  </span>
-                </div>
-              </div>
-              <div className="p-5 flex flex-col justify-between flex-1">
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
-                    <Mic2 className="size-4 shrink-0 mt-0.5" />
-                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
-                      Voices Unheard: Slam Poetry Performance
-                    </h3>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
-                    Transforming lived community conversations into spoken-word poetry performed across school assemblies and literary festivals.
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
-                  <span>Explore poetry wing</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-            </TiltCard>
-          </motion.div>
-
-          {/* Pillar 3: F-1 World National Finals, Marketing & Social initiative */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.19 }}
-            className="h-full flex flex-col"
-          >
-            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
-            <Link
-              href="/initiative#f1"
-              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
-            >
-              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
-                <Image
-                  src="/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg"
-                  alt="F-1 World National Finals, Marketing & Social initiative"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  placeholder="blur"
-                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                  className="object-cover object-[50%_0%] transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
-                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                    Marketing &amp; Social initiative
-                  </span>
-                </div>
-              </div>
-              <div className="p-5 flex flex-col justify-between flex-1">
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
-                    <Megaphone className="size-4 shrink-0 mt-0.5" />
-                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
-                      F-1 World National Finals, Marketing &amp; Social initiative
-                    </h3>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
-                    Representing India at World Finals managing marketing, sustainability strategy, pit display design, and Women in STEM campaigns.
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
-                  <span>Explore Team Blaze</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-            </TiltCard>
-          </motion.div>
-
-          {/* Pillar 4: Reading Room & Teacher Training Programme */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.26 }}
-            className="h-full flex flex-col"
-          >
-            <TiltCard className="h-full" glareClassName="rounded-2xl sm:rounded-3xl">
-            <Link
-              href="/initiative#reading-room"
-              className="shine-card group flex flex-col justify-between h-full w-full rounded-2xl sm:rounded-3xl border border-[var(--color-gold)]/40 bg-white/85 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5"
-            >
-              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
-                <Image
-                  src="/Pillars%20Of%20Change/Teacher%20Training%20Program/1.jpeg"
-                  alt="Reading Room & Teacher Training Programme"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  placeholder="blur"
-                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                  className="object-cover object-[50%_50%] transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
-                  <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                    Community Literacy
-                  </span>
-                </div>
-              </div>
-              <div className="p-5 flex flex-col justify-between flex-1">
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
-                    <BookOpen className="size-4 shrink-0 mt-0.5" />
-                    <h3 className="text-base font-bold text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
-                      Reading Room & Teacher Training Programme
-                    </h3>
-                  </div>
-                  <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
-                    Establishing community reading sanctuaries paired with educator training workshops alongside SEWA Bharti and Kitaab4U.
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-burgundy)]">
-                  <span>See reading &amp; training</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-            </TiltCard>
-          </motion.div>
+              </motion.div>
+            );
+          })}
         </div>
+
+        <GalleryLightbox
+          images={pillarView ? pillarGalleries[pillarView.key] : []}
+          index={pillarView?.index ?? null}
+          onClose={() => setPillarView(null)}
+          onChangeIndex={(index) => setPillarView((v) => (v ? { ...v, index } : v))}
+        />
       </section>
 
       {/* 4. VISUAL PHOTO SNAPSHOTS: Zero text, high proof with Shine */}
@@ -666,7 +618,7 @@ export function HomePage({ }: HomePageProps = {}) {
       </section>
 
       {/* 5. GLOBAL RECOGNITION BANNER with Golden Luster */}
-      <section className="relative mx-auto max-w-5xl px-4 py-14 sm:px-6 md:py-20">
+      <section className="relative overflow-x-clip w-full mx-auto max-w-5xl px-4 py-14 sm:px-6 md:py-20">
         <div className="glow-ambient-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[520px] opacity-45" />
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
@@ -704,7 +656,7 @@ export function HomePage({ }: HomePageProps = {}) {
       </section>
 
       {/* 7. WARM PERSONAL CLOSING with Radiant Accents */}
-      <section className="relative mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20 text-center">
+      <section className="relative overflow-x-clip w-full mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20 text-center">
         <div className="glow-ambient-gold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[440px] opacity-40" />
         <motion.div
           initial={{ opacity: 0, y: 14 }}

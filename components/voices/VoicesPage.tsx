@@ -48,7 +48,7 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
       </section>
 
       {/* Creative Pipeline: 4 Steps */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -103,8 +103,8 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
       <FeaturedPerformancePieces />
 
       {/* Featured Stage Performance Video */}
-      <section className="mx-auto min-w-0 max-w-5xl px-4 py-14 sm:px-6 md:py-20 border-t border-[var(--color-gold)]/20">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <section className="w-full mx-auto min-w-0 max-w-5xl px-4 py-14 sm:px-6 md:py-20 border-t border-[var(--color-gold)]/20">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-12 lg:items-center">
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -171,7 +171,7 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
       </section>
 
       {/* Appearances Table */}
-      <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}

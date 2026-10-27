@@ -1,6 +1,5 @@
 import { HomePage } from "@/components/home/HomePage";
 import { siteMeta } from "@/data/site";
-import { getPublicGalleryImages, pickHeroGalleryImage } from "@/lib/get-public-gallery-images";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -11,7 +10,5 @@ export const metadata = createPageMetadata({
 });
 
 export default function Page() {
-  const galleryImages = getPublicGalleryImages();
-  const heroImage = pickHeroGalleryImage(galleryImages);
-  return <HomePage heroImage={heroImage} galleryImages={galleryImages} />;
+  return <HomePage />;
 }

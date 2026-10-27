@@ -119,7 +119,7 @@ export function FeaturedPerformancePieces() {
   }, [activeModalPiece]);
 
   return (
-    <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24 border-t border-[var(--color-gold)]/20">
+    <section className="w-full mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24 border-t border-[var(--color-gold)]/20">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}

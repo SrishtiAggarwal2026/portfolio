@@ -107,3 +107,52 @@ for (const img of allImages) {
 
 fs.writeFileSync(outputFile, JSON.stringify(uniqueImages, null, 2) + "\n", "utf8");
 console.log(`Updated gallery manifest: scanned ${allImages.length} images, indexed ${uniqueImages.length} unique photos.`);
+
+// Per-pillar photo sets for the home page "Pillars of Change" cards. Deduplicated only
+// within each pillar, so photos also present in images/ still appear here.
+const pillarFolders = {
+  clinic: { category: "Advocacy Clinic", dirs: ["Pillars Of Change/Advocacy Clinics"] },
+  voices: {
+    category: "Voices Unheard",
+    dirs: ["Pillars Of Change/Voices Unheard & Slam Poetry Performance", "voices"],
+  },
+  f1: { category: "F1 in Schools", dirs: ["Pillars Of Change/F1-Marketing & Social initiative", "f1"] },
+  readingRoom: {
+    category: "Reading Room & Literacy",
+    dirs: ["Pillars Of Change/Teacher Training Program", "books"],
+  },
+};
+
+const pillarGalleries = {};
+for (const [key, { category, dirs }] of Object.entries(pillarFolders)) {
+  const seen = new Set();
+  pillarGalleries[key] = [];
+  for (const dir of dirs) {
+    const abs = path.join(publicDir, dir);
+    if (!fs.existsSync(abs)) continue;
+    const images = scanDir(abs, dir).sort((a, b) =>
+      a.relPath.localeCompare(b.relPath, undefined, { sensitivity: "base", numeric: true })
+    );
+    for (const img of images) {
+      if (seen.has(img.hash)) continue;
+      seen.add(img.hash);
+      pillarGalleries[key].push({
+        relPath: img.relPath,
+        filename: img.filename,
+        src: "/" + img.relPath.split("/").map((part) => encodeURIComponent(part)).join("/"),
+        category,
+      });
+    }
+  }
+}
+
+fs.writeFileSync(
+  path.join(root, "data", "pillar-galleries.json"),
+  JSON.stringify(pillarGalleries, null, 2) + "\n",
+  "utf8"
+);
+console.log(
+  `Updated pillar galleries: ${Object.entries(pillarGalleries)
+    .map(([k, v]) => `${k}=${v.length}`)
+    .join(", ")}.`
+);

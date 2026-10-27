@@ -252,6 +252,7 @@ export const f1Data = {
   media: {
     poster: "/in-the-communities/f1.png",
     teamPhoto: "/Pillars%20Of%20Change/F1-Marketing%20%26%20Social%20initiative/1.jpeg",
+    founderCard: "/f1/photo_2026-09-11_09-56-01.jpg",
   },
 } as const;
 
@@ -381,6 +382,8 @@ export const impactPage = {
   },
 } as const;
 
+type PerformanceStatus = "Upcoming" | "Past";
+
 export const voicesPage = {
   heroSub:
     "Ethical documentation meets performance poetry — transforming kitchen-table conversations into catalysts for change.",
@@ -391,9 +394,9 @@ export const voicesPage = {
     { step: "04", title: "Perform", desc: "Stage advocacy at schools and festivals" },
   ] as const,
   performances: [
-    { event: "Winter Literary Evening", date: "Feb 2026", venue: "New Delhi", status: "Upcoming" as const },
-    { event: "School Assembly Feature", date: "Nov 2025", venue: "The British School", status: "Past" as const },
-    { event: "Community Festival Stage", date: "Apr 2026", venue: "New Delhi", status: "Upcoming" as const },
+    { event: "Community Festival Stage", date: "Apr 2026", venue: "New Delhi", status: "Past" as PerformanceStatus },
+    { event: "Winter Literary Evening", date: "Feb 2026", venue: "New Delhi", status: "Past" as PerformanceStatus },
+    { event: "School Assembly Feature", date: "Nov 2025", venue: "The British School", status: "Past" as PerformanceStatus },
   ] as const,
 } as const;
 

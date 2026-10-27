@@ -7,6 +7,7 @@ import {
   BookOpen,
   Calendar,
   CheckCircle2,
+  Flag,
   Globe2,
   GraduationCap,
   HeartHandshake,
@@ -21,7 +22,7 @@ import { PublicPhotoGallery } from "@/components/gallery/public-photo-gallery";
 import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
 import { Badge } from "@/components/ui/badge";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { about, siteMeta, achievements } from "@/data/site";
+import { about, siteMeta, achievements, f1Data } from "@/data/site";
 import type { PublicGalleryImage } from "@/lib/public-gallery-image";
 import { cn } from "@/lib/utils";
 
@@ -184,7 +185,7 @@ export default function AboutPage({ galleryImages }: AboutPageProps) {
       </section>
 
       {/* 2. THE FOUNDER'S JOURNEY: Redesigned Editorial Chapters */}
-      <section className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24 border-t border-[var(--color-gold)]/20">
+      <section className="relative w-full mx-auto max-w-5xl px-4 py-16 sm:px-6 md:py-24 border-t border-[var(--color-gold)]/20">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -367,7 +368,7 @@ export default function AboutPage({ galleryImages }: AboutPageProps) {
       {/* 4. GLOBAL RECOGNITION & SCHOOL AWARD */}
       <section className="bg-[var(--color-cream)]/20 border-b border-border py-14 md:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-center">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -441,8 +442,72 @@ export default function AboutPage({ galleryImages }: AboutPageProps) {
         </div>
       </section>
 
-      {/* 5. VISUAL ARCHIVE: Photo Gallery with category tabs */}
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 md:py-20">
+      {/* 5. F1 IN SCHOOLS: Team Blaze */}
+      <section className="border-b border-border py-14 md:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="lg:col-span-5"
+            >
+              <div className="group relative aspect-square w-full overflow-hidden rounded-2xl border border-[var(--color-gold)]/40 bg-muted shadow-xl">
+                <Image
+                  src={f1Data.media.founderCard}
+                  alt="Srishti Aggarwal, Digital Media and Marketing Manager for Team Blaze"
+                  fill
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 420px"
+                />
+              </div>
+              <p className="mt-2 text-center text-xs text-muted-foreground">
+                {f1Data.team} · {f1Data.school}
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4 lg:col-span-7"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/70 px-3.5 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                <Flag className="size-4" /> F1 in Schools · {f1Data.team}
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                {f1Data.tagline}
+              </h2>
+              <p className="text-sm font-semibold text-[var(--color-burgundy)]">{f1Data.role}</p>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {f1Data.summary}
+              </p>
+
+              <div className="grid gap-3 pt-2 sm:grid-cols-2">
+                {f1Data.highlights.map((h) => (
+                  <div
+                    key={h.title}
+                    className="flex items-start gap-2.5 rounded-xl border border-border/80 bg-card/60 p-3"
+                  >
+                    <span className="text-lg leading-none" aria-hidden>
+                      {h.emoji}
+                    </span>
+                    <div>
+                      <p className="text-sm font-bold text-foreground">{h.title}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">{h.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. VISUAL ARCHIVE: Photo Gallery with category tabs */}
+      <section className="w-full mx-auto max-w-6xl px-4 py-14 sm:px-6 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -463,7 +528,7 @@ export default function AboutPage({ galleryImages }: AboutPageProps) {
         </div>
       </section>
 
-      {/* 6. PARTNERSHIP STRIP */}
+      {/* 7. PARTNERSHIP STRIP */}
       <section className="border-t border-border bg-card py-7">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 sm:px-6 md:flex-row md:justify-center">
           <div className="flex h-16 w-full max-w-xs items-center justify-center rounded-xl border border-dashed border-border bg-muted/40 text-center text-xs sm:text-sm font-semibold text-muted-foreground hover:border-[var(--color-gold)]/50 transition-colors">

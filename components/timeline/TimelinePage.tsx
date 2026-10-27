@@ -161,7 +161,7 @@ export default function TimelinePage({ galleryImages }: TimelinePageProps) {
       </section>
 
       {/* Main Interactive Timeline Section */}
-      <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <Timeline
           phases={timelineData.phases}
           renderImage={(phase) => {

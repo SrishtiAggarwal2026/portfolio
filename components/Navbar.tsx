@@ -78,7 +78,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <nav className="hidden md:flex items-center gap-0.5 sm:gap-1 relative">
+          <nav className="hidden lg:flex items-center gap-1 relative">
             {navLinks.map((l) => {
               const active = pathname === l.href;
               const isCta = l.href === "/contact";
@@ -88,7 +88,7 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   className={cn(
-                    "relative rounded-full px-2.5 sm:px-3 py-1 text-xs sm:text-[13px] font-medium transition-all duration-200",
+                    "relative whitespace-nowrap rounded-full px-3 py-1 text-[13px] font-medium transition-all duration-200",
                     active
                       ? "text-white font-semibold shadow-xs"
                       : isCta
@@ -114,12 +114,12 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="flex md:hidden p-1.5 rounded-full text-[var(--color-burgundy)] hover:bg-[var(--color-cream)]/70 transition-all active:scale-95 cursor-pointer"
+            className="flex lg:hidden p-2.5 -mr-1 rounded-full text-[var(--color-burgundy)] hover:bg-[var(--color-cream)]/70 transition-all active:scale-95 cursor-pointer"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav-panel"
           >
-            {mobileOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
 
@@ -131,7 +131,7 @@ export function Navbar() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -8 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-14 inset-x-3 mx-auto max-w-xs rounded-3xl border border-[var(--color-gold)]/40 bg-[var(--color-paper)]/98 p-3 shadow-2xl backdrop-blur-2xl md:hidden ring-1 ring-black/5"
+            className="absolute top-14 inset-x-3 mx-auto max-w-xs rounded-3xl border border-[var(--color-gold)]/40 bg-[var(--color-paper)]/98 p-3 shadow-2xl backdrop-blur-2xl lg:hidden ring-1 ring-black/5"
           >
             {/* Header in mobile menu */}
             <div className="flex items-center gap-2.5 px-3 py-2 border-b border-[var(--color-gold)]/20 mb-1">
@@ -170,7 +170,7 @@ export function Navbar() {
                       href={l.href}
                       onClick={() => setMobileOpen(false)}
                       className={cn(
-                        "flex items-center justify-between rounded-xl px-3.5 py-2 text-xs font-medium transition-colors",
+                        "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
                         active
                           ? "bg-[var(--color-burgundy)] text-white font-semibold shadow-xs"
                           : isCta

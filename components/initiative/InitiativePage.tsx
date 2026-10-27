@@ -2,27 +2,21 @@
 
 import { motion } from "framer-motion";
 import {
-  ArrowDown,
   ArrowRight,
-  BookOpen,
   Building2,
   CheckCircle2,
   FileCheck2,
   Flag,
   GraduationCap,
   HeartHandshake,
-  Megaphone,
   Mic2,
   ShieldCheck,
   Users,
 } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import { CardSpotlight } from "@/components/aceternity/card-spotlight";
-import { StoryBlockPhoto } from "@/components/gallery/story-block-photo";
+import { PhotoCarousel } from "@/components/gallery/photo-carousel";
 import { initiative, f1Data } from "@/data/site";
-import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
-import type { PublicGalleryImage } from "@/lib/public-gallery-image";
+import { pillarGalleries } from "@/lib/pillar-galleries";
 import { cn } from "@/lib/utils";
 import { ReadingRoomSection } from "@/components/initiative/reading-room-section";
 import { TextReveal } from "@/components/motion/text-reveal";
@@ -30,11 +24,14 @@ import { TextReveal } from "@/components/motion/text-reveal";
 const serviceIcons = [Building2, FileCheck2, Users, ShieldCheck];
 const stepIcons = [HeartHandshake, ShieldCheck, GraduationCap, Mic2];
 
-type InitiativePageProps = {
-  clinicPhoto?: PublicGalleryImage;
-};
+const toCarouselItems = (images: (typeof pillarGalleries)[keyof typeof pillarGalleries]) =>
+  images.map((image) => ({ type: "image" as const, image }));
 
-export default function InitiativePage({ clinicPhoto }: InitiativePageProps) {
+const clinicItems = toCarouselItems(pillarGalleries.clinic);
+const voicesItems = toCarouselItems(pillarGalleries.voices);
+const f1Items = toCarouselItems(pillarGalleries.f1);
+
+export default function InitiativePage() {
   return (
     <div className="flex min-w-0 flex-col">
       {/* Hero Overview */}
@@ -54,75 +51,12 @@ export default function InitiativePage({ clinicPhoto }: InitiativePageProps) {
           <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
             A four-pillar model bridging grassroots welfare, performance poetry, youth marketing, and community literacy.
           </p>
-
-          {/* 4 Pillars Bento */}
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {initiative.cards.map((card, i) => {
-              const icons = [Building2, Mic2, Megaphone, BookOpen];
-              const Icon = icons[i] ?? Building2;
-              const delays = [0.08, 0.14, 0.2, 0.26];
-              return (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: delays[i] ?? 0.1, duration: 0.5 }}
-                  whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                  className="h-full flex flex-col"
-                >
-                  <Link
-                    href={card.href}
-                    className="shine-card group flex flex-col justify-between h-full w-full overflow-hidden rounded-2xl border border-[var(--color-gold)]/40 bg-white/90 shadow-xs transition-all duration-300"
-                  >
-                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-muted">
-                      <Image
-                        src={card.image}
-                        alt={card.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        placeholder="blur"
-                        blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                        className={cn(
-                          "object-cover transition-transform duration-500 group-hover:scale-105",
-                          i === 2 ? "object-[50%_0%]" : i === 3 ? "object-[50%_50%]" : "object-[50%_15%]"
-                        )}
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
-                        <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                          {card.tag}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-5 flex flex-col justify-between flex-1">
-                      <div className="flex-1 flex flex-col">
-                        <div className="flex items-start gap-2 mb-2.5 min-h-[3.5rem] sm:min-h-[4rem] text-[var(--color-burgundy)]">
-                          <Icon className="size-4 shrink-0 mt-0.5" aria-hidden />
-                          <h2 className="text-base font-bold tracking-tight text-foreground group-hover:text-[var(--color-burgundy)] transition-colors leading-snug">
-                            {card.title}
-                          </h2>
-                        </div>
-                        <p className="text-xs font-semibold text-foreground/90 leading-relaxed min-h-[4.25rem]">
-                          {card.desc}
-                        </p>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-burgundy)]">
-                        <span>Explore</span>
-                        <ArrowDown className="size-3.5 transition-transform group-hover:translate-y-0.5" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
         </motion.div>
       </section>
 
       {/* Section 1: Advocacy Clinic (Visual 2x2 Grid + Photo) */}
-      <section id="clinic" className="scroll-mt-24 border-y border-[var(--color-gold)]/25 bg-secondary/30 py-16 md:py-24">
-        <div className="mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:items-center">
+      <section id="clinic" className="border-y border-[var(--color-gold)]/25 bg-secondary/30 py-16 md:py-24">
+        <div className="mx-auto grid min-w-0 max-w-6xl gap-10 px-4 sm:px-6 grid-cols-1 lg:grid-cols-12 lg:items-center">
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -173,23 +107,18 @@ export default function InitiativePage({ clinicPhoto }: InitiativePageProps) {
             viewport={{ once: true }}
             className="min-w-0 w-full max-lg:mx-auto max-lg:max-w-md lg:col-span-5"
           >
-            <StoryBlockPhoto
-              image={clinicPhoto ?? {
-                filename: "advocacy-clinic.jpeg",
-                src: "/pillars/advocacy-clinic.jpeg",
-                category: "Advocacy Clinic",
-                unoptimized: false,
-              }}
-              label="Srishti at weekly Anganwadi clinic session"
-              alt="Advocacy clinic session in the community"
+            <PhotoCarousel
+              items={clinicItems}
+              label="Advocacy Clinic photos"
               aspectClassName="aspect-[4/5]"
+              sizes="(max-width: 1024px) 448px, 460px"
             />
           </motion.div>
         </div>
       </section>
 
       {/* Section 2: Voices Unheard Process (Horizontal 4-Step Pipeline) */}
-      <section id="process" className="scroll-mt-24 mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section id="process" className="w-full mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -244,12 +173,26 @@ export default function InitiativePage({ clinicPhoto }: InitiativePageProps) {
             );
           })}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto mt-12 max-w-3xl"
+        >
+          <PhotoCarousel
+            items={voicesItems}
+            label="Voices Unheard performance photos"
+            aspectClassName="aspect-[16/10]"
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </motion.div>
       </section>
 
       {/* Section 3: F-1 World National Finals, Marketing & Social initiative — Team Blaze */}
-      <section id="f1" className="scroll-mt-24 border-t border-[var(--color-gold)]/25 bg-[var(--color-paper)] py-16 md:py-24">
+      <section id="f1" className="border-t border-[var(--color-gold)]/25 bg-[var(--color-paper)] py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-center">
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -293,22 +236,12 @@ export default function InitiativePage({ clinicPhoto }: InitiativePageProps) {
               viewport={{ once: true }}
               className="lg:col-span-5"
             >
-              {/* Official Showcase Image */}
-              <div className="group relative aspect-[4/3] sm:aspect-[4/4] lg:aspect-[4/5] w-full overflow-hidden rounded-2xl border border-[var(--color-gold)]/35 bg-muted shadow-lg">
-                <Image
-                  src={f1Data.media.teamPhoto}
-                  alt="Team Blaze at F-1 World National Finals"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 480px"
-                  placeholder="blur"
-                  blurDataURL={PLACEHOLDER_BLUR_DATA_URL}
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 sm:p-5 pt-10 text-white">
-                  <p className="text-sm font-bold">Team Blaze · Pit Display &amp; Showcase</p>
-                  <p className="text-xs text-white/80">F-1 World National Finals, Marketing &amp; Social initiative</p>
-                </div>
-              </div>
+              <PhotoCarousel
+                items={f1Items}
+                label="F1 in Schools and Team Blaze photos"
+                aspectClassName="aspect-[4/3] sm:aspect-square lg:aspect-[4/5]"
+                sizes="(max-width: 1024px) 100vw, 460px"
+              />
             </motion.div>
           </div>
         </div>

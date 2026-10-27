@@ -108,7 +108,7 @@ export default function ImpactPage() {
       </section>
 
       {/* Pillars of Impact: Visual 3-Card Grid */}
-      <section className="mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto min-w-0 max-w-6xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -181,7 +181,7 @@ export default function ImpactPage() {
       </section>
 
       {/* SDG Alignment: Compact Card */}
-      <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6 md:py-24">
+      <section className="w-full mx-auto max-w-4xl px-4 py-16 sm:px-6 md:py-24">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
