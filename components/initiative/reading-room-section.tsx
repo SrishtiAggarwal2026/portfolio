@@ -11,13 +11,16 @@ import {
 } from "lucide-react";
 import { PhotoCarousel, type CarouselItem } from "@/components/gallery/photo-carousel";
 import { readingRoom } from "@/data/site";
-import { pillarGalleries } from "@/lib/pillar-galleries";
+import { pillarGalleries, pillarVideos } from "@/lib/pillar-galleries";
+import { videoCaption } from "@/lib/public-gallery-image";
 
 const carouselItems: CarouselItem[] = [
+  ...pillarVideos.readingRoom.map((video) => ({
+    type: "video" as const,
+    src: video.src,
+    caption: videoCaption(video),
+  })),
   ...pillarGalleries.readingRoom.map((image) => ({ type: "image" as const, image })),
-  ...readingRoom.media
-    .filter((item) => item.type === "video")
-    .map((item) => ({ type: "video" as const, src: encodeURI(item.src), caption: item.alt })),
 ];
 
 export function ReadingRoomSection() {

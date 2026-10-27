@@ -14,9 +14,10 @@ import {
   Users,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/aceternity/card-spotlight";
-import { PhotoCarousel } from "@/components/gallery/photo-carousel";
+import { PhotoCarousel, type CarouselItem } from "@/components/gallery/photo-carousel";
 import { initiative, f1Data } from "@/data/site";
-import { pillarGalleries } from "@/lib/pillar-galleries";
+import { pillarGalleries, pillarVideos, type PillarKey } from "@/lib/pillar-galleries";
+import { videoCaption } from "@/lib/public-gallery-image";
 import { cn } from "@/lib/utils";
 import { ReadingRoomSection } from "@/components/initiative/reading-room-section";
 import { TextReveal } from "@/components/motion/text-reveal";
@@ -24,12 +25,18 @@ import { TextReveal } from "@/components/motion/text-reveal";
 const serviceIcons = [Building2, FileCheck2, Users, ShieldCheck];
 const stepIcons = [HeartHandshake, ShieldCheck, GraduationCap, Mic2];
 
-const toCarouselItems = (images: (typeof pillarGalleries)[keyof typeof pillarGalleries]) =>
-  images.map((image) => ({ type: "image" as const, image }));
+const toCarouselItems = (key: PillarKey): CarouselItem[] => [
+  ...pillarVideos[key].map((video) => ({
+    type: "video" as const,
+    src: video.src,
+    caption: videoCaption(video),
+  })),
+  ...pillarGalleries[key].map((image) => ({ type: "image" as const, image })),
+];
 
-const clinicItems = toCarouselItems(pillarGalleries.clinic);
-const voicesItems = toCarouselItems(pillarGalleries.voices);
-const f1Items = toCarouselItems(pillarGalleries.f1);
+const clinicItems = toCarouselItems("clinic");
+const voicesItems = toCarouselItems("voices");
+const f1Items = toCarouselItems("f1");
 
 export default function InitiativePage() {
   return (
@@ -182,7 +189,7 @@ export default function InitiativePage() {
         >
           <PhotoCarousel
             items={voicesItems}
-            label="Voices Unheard performance photos"
+            label="Voices Unheard performance photos and videos"
             aspectClassName="aspect-[16/10]"
             sizes="(max-width: 768px) 100vw, 768px"
           />
@@ -238,7 +245,7 @@ export default function InitiativePage() {
             >
               <PhotoCarousel
                 items={f1Items}
-                label="F1 in Schools and Team Blaze photos"
+                label="F1 in Schools and Team Blaze photos and videos"
                 aspectClassName="aspect-[4/3] sm:aspect-square lg:aspect-[4/5]"
                 sizes="(max-width: 1024px) 100vw, 460px"
               />

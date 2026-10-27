@@ -10,6 +10,7 @@ const publicDir = path.join(root, "public");
 const outputFile = path.join(root, "data", "gallery-manifest.json");
 
 const IMAGE_FILE_RE = /\.(jpe?g|png|webp)$/i;
+const VIDEO_FILE_RE = /\.(mp4|webm|mov|m4v)$/i;
 
 function determineCategory(relPath) {
   const lower = relPath.toLowerCase();
@@ -37,7 +38,7 @@ function determineCategory(relPath) {
   return "Advocacy & Community";
 }
 
-function scanDir(dir, rel = "") {
+function scanDir(dir, rel = "", fileRe = IMAGE_FILE_RE) {
   let results = [];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
 
@@ -51,8 +52,8 @@ function scanDir(dir, rel = "") {
     if (lstat.isSymbolicLink()) continue;
 
     if (entry.isDirectory()) {
-      results = results.concat(scanDir(fullPath, relPath));
-    } else if (IMAGE_FILE_RE.test(entry.name)) {
+      results = results.concat(scanDir(fullPath, relPath, fileRe));
+    } else if (fileRe.test(entry.name)) {
       // Skip system icons and founder avatar
       if (
         entry.name === "profile_pic.jpeg" ||
@@ -123,36 +124,49 @@ const pillarFolders = {
   },
 };
 
-const pillarGalleries = {};
-for (const [key, { category, dirs }] of Object.entries(pillarFolders)) {
-  const seen = new Set();
-  pillarGalleries[key] = [];
-  for (const dir of dirs) {
-    const abs = path.join(publicDir, dir);
-    if (!fs.existsSync(abs)) continue;
-    const images = scanDir(abs, dir).sort((a, b) =>
-      a.relPath.localeCompare(b.relPath, undefined, { sensitivity: "base", numeric: true })
-    );
-    for (const img of images) {
-      if (seen.has(img.hash)) continue;
-      seen.add(img.hash);
-      pillarGalleries[key].push({
-        relPath: img.relPath,
-        filename: img.filename,
-        src: "/" + img.relPath.split("/").map((part) => encodeURIComponent(part)).join("/"),
-        category,
-      });
+function collectPillarMedia(fileRe) {
+  const media = {};
+  for (const [key, { category, dirs }] of Object.entries(pillarFolders)) {
+    const seen = new Set();
+    media[key] = [];
+    for (const dir of dirs) {
+      const abs = path.join(publicDir, dir);
+      if (!fs.existsSync(abs)) continue;
+      const files = scanDir(abs, dir, fileRe).sort((a, b) =>
+        a.relPath.localeCompare(b.relPath, undefined, { sensitivity: "base", numeric: true })
+      );
+      for (const file of files) {
+        if (seen.has(file.hash)) continue;
+        seen.add(file.hash);
+        media[key].push({
+          relPath: file.relPath,
+          filename: file.filename,
+          src: "/" + file.relPath.split("/").map((part) => encodeURIComponent(part)).join("/"),
+          category,
+        });
+      }
     }
   }
+  return media;
 }
 
+const summarize = (media) =>
+  Object.entries(media)
+    .map(([k, v]) => `${k}=${v.length}`)
+    .join(", ");
+
+const pillarGalleries = collectPillarMedia(IMAGE_FILE_RE);
 fs.writeFileSync(
   path.join(root, "data", "pillar-galleries.json"),
   JSON.stringify(pillarGalleries, null, 2) + "\n",
   "utf8"
 );
-console.log(
-  `Updated pillar galleries: ${Object.entries(pillarGalleries)
-    .map(([k, v]) => `${k}=${v.length}`)
-    .join(", ")}.`
+console.log(`Updated pillar galleries: ${summarize(pillarGalleries)}.`);
+
+const pillarVideos = collectPillarMedia(VIDEO_FILE_RE);
+fs.writeFileSync(
+  path.join(root, "data", "pillar-videos.json"),
+  JSON.stringify(pillarVideos, null, 2) + "\n",
+  "utf8"
 );
+console.log(`Updated pillar videos: ${summarize(pillarVideos)}.`);

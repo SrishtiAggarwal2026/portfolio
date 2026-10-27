@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { PublicGalleryImage } from "@/lib/public-gallery-image";
+import { videoCaption, type PublicGalleryImage } from "@/lib/public-gallery-image";
 import { getGalleryImageCaption } from "@/lib/utils";
 
 function altFromFilename(filename: string): string {
@@ -30,9 +30,12 @@ export function GalleryLightbox({ images, index, onClose, onChangeIndex }: Galle
   const open = index !== null;
   const count = images.length;
   const current = index !== null && index >= 0 && index < count ? images[index] : null;
+  const isVideo = current?.mediaType === "video";
   const caption =
     index !== null && count > 0 && current
-      ? getGalleryImageCaption(current.filename, index, current.category)
+      ? isVideo
+        ? videoCaption(current)
+        : getGalleryImageCaption(current.filename, index, current.category)
       : "";
 
   const goPrev = useCallback(() => {
@@ -70,22 +73,34 @@ export function GalleryLightbox({ images, index, onClose, onChangeIndex }: Galle
           <>
             <DialogHeader className="sr-only">
               <DialogTitle>
-                Gallery image {index! + 1} of {count}
+                Gallery {isVideo ? "video" : "image"} {index! + 1} of {count}
               </DialogTitle>
               <DialogDescription>{caption}</DialogDescription>
             </DialogHeader>
             <div className="relative h-[min(78vh,720px)] min-h-[200px] w-full overflow-hidden rounded-lg bg-muted">
-              <Image
-                src={current.src}
-                alt={altFromFilename(current.filename)}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 96vw, min(896px, 92vw)"
-                quality={current.unoptimized ? undefined : 75}
-                unoptimized={current.unoptimized}
-                loading="lazy"
-                placeholder="empty"
-              />
+              {isVideo ? (
+                <video
+                  key={current.src}
+                  src={`${current.src}#t=0.1`}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label={caption}
+                  className="size-full bg-black object-contain"
+                />
+              ) : (
+                <Image
+                  src={current.src}
+                  alt={altFromFilename(current.filename)}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 96vw, min(896px, 92vw)"
+                  quality={current.unoptimized ? undefined : 75}
+                  unoptimized={current.unoptimized}
+                  loading="lazy"
+                  placeholder="empty"
+                />
+              )}
             </div>
             <p className="truncate px-1 text-center text-xs text-muted-foreground">{caption}</p>
             <div className="flex items-center justify-between gap-2 border-t border-border pt-3">

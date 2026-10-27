@@ -172,7 +172,7 @@ export function PhotoCarousel({
                 </>
               ) : (
                 <video
-                  src={current.src}
+                  src={`${current.src}#t=0.1`}
                   controls
                   playsInline
                   preload="metadata"

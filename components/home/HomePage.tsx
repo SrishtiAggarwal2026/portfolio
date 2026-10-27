@@ -11,6 +11,7 @@ import {
   Images,
   Megaphone,
   Mic2,
+  Play,
   Quote,
   Scale,
   Users,
@@ -31,7 +32,7 @@ import { TextReveal } from "@/components/motion/text-reveal";
 import { PLACEHOLDER_BLUR_DATA_URL } from "@/lib/image-placeholder";
 import { achievements, home } from "@/data/site";
 import { useCountUp } from "@/hooks/use-count-up";
-import { pillarGalleries, type PillarKey } from "@/lib/pillar-galleries";
+import { pillarGalleries, pillarVideos, type PillarKey } from "@/lib/pillar-galleries";
 import { cn } from "@/lib/utils";
 
 const pillars: {
@@ -95,6 +96,10 @@ const pillars: {
     linkLabel: "Learn more",
   },
 ];
+
+const pillarMedia = Object.fromEntries(
+  pillars.map(({ key }) => [key, [...pillarVideos[key], ...pillarGalleries[key]]])
+) as Record<PillarKey, (typeof pillarGalleries)[PillarKey]>;
 
 const heroContainerVariants = {
   hidden: { opacity: 0 },
@@ -449,8 +454,9 @@ export function HomePage() {
           {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
             const photoCount = pillarGalleries[pillar.key].length;
+            const videoCount = pillarVideos[pillar.key].length;
             const openPhotos = () => {
-              if (photoCount > 0) setPillarView({ key: pillar.key, index: 0 });
+              if (pillarMedia[pillar.key].length > 0) setPillarView({ key: pillar.key, index: 0 });
             };
             return (
               <motion.div
@@ -464,7 +470,7 @@ export function HomePage() {
                   <div
                     role="button"
                     tabIndex={0}
-                    aria-label={`View ${photoCount} photos: ${pillar.title}`}
+                    aria-label={`View ${photoCount} photos${videoCount > 0 ? ` and ${videoCount} videos` : ""}: ${pillar.title}`}
                     onClick={openPhotos}
                     onKeyDown={(e) => {
                       if (e.target !== e.currentTarget) return;
@@ -488,12 +494,20 @@ export function HomePage() {
                           pillar.objectPosition
                         )}
                       />
-                      {photoCount > 0 ? (
-                        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
-                          <Images className="size-3" aria-hidden />
-                          {photoCount}
-                        </span>
-                      ) : null}
+                      <div className="absolute right-3 top-3 flex items-center gap-1.5">
+                        {videoCount > 0 ? (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                            <Play className="size-3 fill-white" aria-hidden />
+                            {videoCount}
+                          </span>
+                        ) : null}
+                        {photoCount > 0 ? (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                            <Images className="size-3" aria-hidden />
+                            {photoCount}
+                          </span>
+                        ) : null}
+                      </div>
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3 pt-7">
                         <span className="inline-block rounded-full border border-white/20 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
                           {pillar.tag}
@@ -513,14 +527,14 @@ export function HomePage() {
                         </p>
                       </div>
                       <div className="mt-4 pt-3 border-t border-[var(--color-gold)]/20 flex items-center justify-between gap-2 text-xs font-semibold text-[var(--color-burgundy)]">
-                        <span className="inline-flex items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                           <Images className="size-3.5" aria-hidden />
-                          View photos
+                          View gallery
                         </span>
                         <Link
                           href={pillar.href}
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 rounded-full px-2 py-1 -mr-2 hover:bg-[var(--color-gold)]/15"
+                          className="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-1 -mr-2 hover:bg-[var(--color-gold)]/15"
                         >
                           {pillar.linkLabel}
                           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
@@ -534,7 +548,7 @@ export function HomePage() {
         </div>
 
         <GalleryLightbox
-          images={pillarView ? pillarGalleries[pillarView.key] : []}
+          images={pillarView ? pillarMedia[pillarView.key] : []}
           index={pillarView?.index ?? null}
           onClose={() => setPillarView(null)}
           onChangeIndex={(index) => setPillarView((v) => (v ? { ...v, index } : v))}
