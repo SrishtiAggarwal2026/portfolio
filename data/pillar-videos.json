@@ -8,14 +8,7 @@
       "category": "Voices Unheard"
     }
   ],
-  "f1": [
-    {
-      "relPath": "f1/F1.mp4",
-      "filename": "F1.mp4",
-      "src": "/f1/F1.mp4",
-      "category": "F1 in Schools"
-    }
-  ],
+  "f1": [],
   "readingRoom": [
     {
       "relPath": "Pillars Of Change/Teacher Training Program/Reading room 8.mp4",
