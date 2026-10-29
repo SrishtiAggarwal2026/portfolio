@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   ArrowRight,
   Building2,
@@ -132,9 +133,9 @@ export default function InitiativePage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)] px-3 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
-            Consent-First Pipeline
-          </span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/70 px-3.5 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+            <Mic2 className="size-3.5" /> Pillar 2 · Slam Poetry &amp; Creative Advocacy
+          </div>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--color-burgundy)] md:text-4xl">
             Voices Unheard Process
           </h2>
@@ -179,6 +180,59 @@ export default function InitiativePage() {
               </motion.div>
             );
           })}
+        </div>
+
+        {/* Featured Stage Performance Video */}
+        <div className="mt-16 pt-12 border-t border-[var(--color-gold)]/20">
+          <div className="grid gap-8 grid-cols-1 lg:grid-cols-12 lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4 lg:col-span-6"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-cream)] px-3.5 py-1 text-xs font-semibold text-[var(--color-burgundy)]">
+                <Mic2 className="size-3.5" /> Featured Stage Performance
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                Bal Vivah — A Testimony in Verse
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Adapted from firsthand testimonies documented during weekly on-ground listening circles in Delhi-NCR. This spoken-word performance captures the emotional urgency, human dignity, and grassroots push against child marriage.
+              </p>
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-cream)]/70 px-3 py-1 text-xs font-medium text-foreground">
+                  Original Spoken-Word Composition · Srishti Aggarwal
+                </span>
+                <Link
+                  href="/voices"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-burgundy)] hover:text-[var(--color-gold)] transition-colors"
+                >
+                  Explore Full Voices Anthology <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-6"
+            >
+              <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[var(--color-gold)]/35 bg-black shadow-xl">
+                <video
+                  src="/voices/bal-vivah.mp4"
+                  poster="/voices/bal-vivah-poster.jpg"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="size-full object-cover"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         <motion.div

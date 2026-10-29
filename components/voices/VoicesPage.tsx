@@ -136,6 +136,7 @@ export default function VoicesPage({ galleryImages }: VoicesPageProps) {
             <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[var(--color-gold)]/35 bg-black shadow-xl">
               <video
                 src="/voices/bal-vivah.mp4"
+                poster="/voices/bal-vivah-poster.jpg"
                 controls
                 playsInline
                 preload="metadata"

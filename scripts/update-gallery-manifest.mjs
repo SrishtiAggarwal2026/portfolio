@@ -59,7 +59,8 @@ function scanDir(dir, rel = "", fileRe = IMAGE_FILE_RE) {
         entry.name === "profile_pic.jpeg" ||
         entry.name.startsWith("apple-touch") ||
         entry.name.startsWith("favicon") ||
-        entry.name.endsWith(".svg")
+        entry.name.endsWith(".svg") ||
+        entry.name.includes("-poster")
       ) {
         continue;
       }
